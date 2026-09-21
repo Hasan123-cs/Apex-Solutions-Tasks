@@ -37,6 +37,7 @@
       <table>
         <thead>
           <tr>
+            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Gender</th>
@@ -72,6 +73,7 @@
       // for no refresh un page
       event.preventDefault();
       users.push({
+        id: crypto.randomUUID(),
         firstName: firstName.value,
         lastName: lastName.value,
         gender: Gender.value,
@@ -112,8 +114,10 @@
       userTable.innerHTML = "";
 
       users.forEach(function (user, index) {
+        console.log(user);
         userTable.innerHTML += `
             <tr>
+                <td>${user.id}</td>
                 <td>${user.firstName}</td>
                 <td>${user.lastName}</td>
                 <td>${user.gender}</td>
