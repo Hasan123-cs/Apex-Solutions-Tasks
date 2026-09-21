@@ -2,6 +2,9 @@ let timer;
 let timeLeft;
 // what mean ? when click edit the editingUserId contain the id 1234-asncds...
 let editingUserId = null;
+// remember last for reverse and know what the direction of sorting
+let sortColumn = null;
+let sortDirection = "asc";
 const savedUsers = localStorage.getItem("users");
 let users = [];
 const form = document.getElementById("MyForm");
@@ -13,6 +16,7 @@ const userTable = document.getElementById("userTable");
 const timerElement = document.getElementById("timer");
 const firstNameError = document.getElementById("firstNameError");
 const lastNameError = document.getElementById("lastNameError");
+const searchInput = document.getElementById("searchInput");
 if (savedUsers) {
   users = JSON.parse(savedUsers);
   displayUsers();
@@ -75,7 +79,9 @@ form.addEventListener("submit", function (event) {
   form.reset();
   saveBtn.disabled = true;
 });
-
+searchInput.addEventListener("input", function () {
+  displayUsers();
+});
 function checkifFormisValidToSubmit() {
   if (firstName.value !== "" && lastName.value !== "" && Gender.value !== "") {
     saveBtn.disabled = false;
@@ -100,26 +106,35 @@ function deleteUser(id) {
 // now to display the users
 function displayUsers() {
   userTable.innerHTML = "";
+  // lets explain how work this part
+  // 1- if we enter nothing so "" include in all so display the all
+  // 2- if emter any keyword in the first/last name its appear directly
+  const searchValue = searchInput.value.toLowerCase().trim();
+  const filteredUsers = users.filter(function (user) {
+    return (
+      user.firstName.toLowerCase().includes(searchValue) ||
+      user.lastName.toLowerCase().includes(searchValue)
+    );
+  });
 
-  users.forEach(function (user, index) {
-    console.log(user);
+  filteredUsers.forEach(function (user) {
     userTable.innerHTML += `
-            <tr>
-                <td>${user.id}</td>
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.gender}</td>
-                <td style="display: flex; gap: 10px;">
-                    <button onclick="deleteUser('${user.id}')">
-                        Delete
-                    </button>
-                    <button onclick="editUser('${user.id}')">
-                          Edit
-                    </button>
-                </td>
-                
-            </tr>
-        `;
+      <tr>
+        <td>${user.id}</td>
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
+        <td>${user.gender}</td>
+        <td>
+          <button onclick="editUser('${user.id}')">
+            Edit
+          </button>
+
+          <button onclick="deleteUser('${user.id}')">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
   });
 }
 
@@ -163,4 +178,56 @@ function editUser(id) {
   editingUserId = id;
   saveBtn.textContent = "Update";
   saveBtn.disabled = false;
+}
+function sortUsers(column) {
+  if (sortColumn === column) {
+    // same field ? just reverse
+    sortDirection = sortDirection === "asc" ? "desc" : "asc";
+  } else {
+    sortColumn = column;
+    sortDirection = "asc";
+  }
+  //  compare 2 object in the array (base on column choose )
+  // if -1 mean x before y if 1 the reverse if 0 so no change
+  // and change based on the number
+  users.sort(function (a, b) {
+    let valueA = a[column];
+    let valueB = b[column];
+
+    valueA = String(valueA).toLowerCase();
+    valueB = String(valueB).toLowerCase();
+
+    if (valueA < valueB) {
+      return sortDirection === "asc" ? -1 : 1;
+    }
+
+    if (valueA > valueB) {
+      return sortDirection === "asc" ? 1 : -1;
+    }
+
+    return 0;
+  });
+
+  updateSortArrows();
+  displayUsers();
+}
+function updateSortArrows() {
+  document.getElementById("idArrow").textContent = "↕";
+  document.getElementById("firstNameArrow").textContent = "↕";
+  document.getElementById("lastNameArrow").textContent = "↕";
+
+  if (sortColumn === "id") {
+    document.getElementById("idArrow").textContent =
+      sortDirection === "asc" ? "↑" : "↓";
+  }
+
+  if (sortColumn === "firstName") {
+    document.getElementById("firstNameArrow").textContent =
+      sortDirection === "asc" ? "↑" : "↓";
+  }
+
+  if (sortColumn === "lastName") {
+    document.getElementById("lastNameArrow").textContent =
+      sortDirection === "asc" ? "↑" : "↓";
+  }
 }

@@ -57,3 +57,20 @@ td {
   display: block;
   margin-top: 5px;
 }
+.search-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.search-container input {
+  padding: 8px 12px;
+  width: 250px;
+}
+.sort-btn {
+  border: none;
+  background: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: inherit;
+}

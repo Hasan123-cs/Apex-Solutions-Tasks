@@ -34,14 +34,37 @@
         </div>
         <button id="saveBtn" disabled>save</button>
       </form>
+      <h2>Search Users</h2>
+
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by first name or last name..."
+        />
+      </div>
       <h2>Saved Users</h2>
 
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>
+              <button class="sort-btn" onclick="sortUsers('id')">
+                ID <span id="idArrow">↕</span>
+              </button>
+            </th>
+
+            <th>
+              <button class="sort-btn" onclick="sortUsers('firstName')">
+                First Name <span id="firstNameArrow">↕</span>
+              </button>
+            </th>
+
+            <th>
+              <button class="sort-btn" onclick="sortUsers('lastName')">
+                Last Name <span id="lastNameArrow">↕</span>
+              </button>
+            </th>
             <th>Gender</th>
             <th>Action</th>
           </tr>
