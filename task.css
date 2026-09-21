@@ -1,0 +1,53 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+.container {
+  width: 500px;
+  margin: auto;
+}
+label {
+  /* this i use for give each label an block of spaces
+    and the margin i use it for the space between labels  */
+  display: block;
+  margin-bottom: 5px;
+}
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+#saveBtn {
+  border: none;
+  width: 100%;
+  border-radius: 10%;
+  background-color: darkblue;
+  color: white;
+}
+
+#saveBtn:disabled {
+  border: none;
+  width: 100%;
+  border-radius: 10%;
+
+  background-color: lightblue;
+  color: white;
+}
+table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+.delete-btn {
+  background-color: red;
+  color: white;
+}
+.form-group {
+  margin-bottom: 18px;
+}

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>=== Apex Task ===</title>
+    <link rel="stylesheet" href="task.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Form Fill Exercise</h1>
+      <h2>Time remaining: <span id="timer">60</span> seconds</h2>
+      <form id="MyForm">
+        <div class="form-group">
+          <label for="firstName">firstName</label>
+          <input type="text" id="firstName" placeholder="Enter First Name" />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">lastName</label>
+          <input type="text" id="lastName" placeholder="Enter last Name " />
+        </div>
+
+        <div class="form-group">
+          <label for="Gender">Gender</label>
+          <select id="selectedGender">
+            <option value="" selected>Select a Gender</option>
+            <option value="male">male</option>
+            <option value="female">female</option>
+          </select>
+        </div>
+        <button id="saveBtn" disabled>save</button>
+      </form>
+      <h2>Saved Users</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="userTable"></tbody>
+      </table>
+    </div>
+  </body>
+  <script>
+    let timer;
+    let timeLeft;
+    const savedUsers = localStorage.getItem("users");
+    let users = [];
+    const form = document.getElementById("MyForm");
+    const firstName = document.getElementById("firstName");
+    const lastName = document.getElementById("lastName");
+    const Gender = document.getElementById("selectedGender");
+    const saveBtn = document.getElementById("saveBtn");
+    const userTable = document.getElementById("userTable");
+    const timerElement = document.getElementById("timer");
+    if (savedUsers) {
+      users = JSON.parse(savedUsers);
+      displayUsers();
+    }
+
+    function saveUsers() {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+    form.addEventListener("submit", function (event) {
+      // for no refresh un page
+      event.preventDefault();
+      users.push({
+        firstName: firstName.value,
+        lastName: lastName.value,
+        gender: Gender.value,
+      });
+      saveUsers();
+      startTimer();
+      displayUsers();
+      // to clear form for reusable the form
+      form.reset();
+      // disable save-btn  again
+      saveBtn.disabled = true;
+    });
+
+    function checkifFormisValidToSubmit() {
+      if (
+        firstName.value !== "" &&
+        lastName.value !== "" &&
+        Gender.value !== ""
+      ) {
+        saveBtn.disabled = false;
+      } else {
+        saveBtn.disabled = true;
+      }
+    }
+    firstName.addEventListener("input", checkifFormisValidToSubmit);
+    lastName.addEventListener("input", checkifFormisValidToSubmit);
+    Gender.addEventListener("change", checkifFormisValidToSubmit);
+
+    // first action delte useer
+    function deleteUser(index) {
+      users.splice(index, 1);
+      saveUsers();
+      startTimer();
+      displayUsers();
+    }
+    // now to display the users
+    function displayUsers() {
+      userTable.innerHTML = "";
+
+      users.forEach(function (user, index) {
+        userTable.innerHTML += `
+            <tr>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                <td>${user.gender}</td>
+                <td>
+                    <button onclick="deleteUser(${index})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+      });
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+
+      timeLeft = 60;
+      timerElement.textContent = timeLeft;
+
+      timer = setInterval(function () {
+        timeLeft--;
+
+        timerElement.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+
+          users = [];
+
+          localStorage.removeItem("users");
+
+          displayUsers();
+
+          timerElement.textContent = 0;
+        }
+      }, 1000);
+    }
+
+    startTimer();
+  </script>
+</html>
