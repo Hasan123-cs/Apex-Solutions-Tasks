@@ -47,8 +47,11 @@ lastName.addEventListener("input", checkifFormisValidToSubmit);
 Gender.addEventListener("change", checkifFormisValidToSubmit);
 
 // first action delte useer
-function deleteUser(index) {
-  users.splice(index, 1);
+function deleteUser(id) {
+  users = users.filter(function (user) {
+    return user.id !== id;
+  });
+
   saveUsers();
   startTimer();
   displayUsers();
@@ -66,7 +69,7 @@ function displayUsers() {
                 <td>${user.lastName}</td>
                 <td>${user.gender}</td>
                 <td>
-                    <button onclick="deleteUser(${index})">
+                    <button onclick="deleteUser('${user.id}')">
                         Delete
                     </button>
                 </td>
