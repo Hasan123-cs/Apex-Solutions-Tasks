@@ -67,6 +67,7 @@
         <h2>Saved Users</h2>
         <span id="countUser">Total Users: 0</span>
       </div>
+      <span id="showingUsers"></span>
       <table>
         <thead>
           <tr>
@@ -94,9 +95,33 @@
 
         <tbody id="userTable"></tbody>
       </table>
+      <div class="pagination">
+        <button id="prevBtn" onclick="previousPage()">Previous</button>
+
+        <div id="pageNumbers"></div>
+
+        <button id="nextBtn" onclick="nextPage()">Next</button>
+      </div>
       <button class="clear-all-btn" onclick="ClearAll()">Clear All</button>
     </div>
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <h3>Delete User?</h3>
 
+        <p>
+          Are you sure you want to delete
+          <strong id="deleteUserName"></strong>?
+        </p>
+
+        <p>This action cannot be undone.</p>
+
+        <button onclick="cancelDelete()" class="cancel-btn">Cancel</button>
+
+        <button onclick="confirmDelete()" class="delete-confirm-btn">
+          Delete
+        </button>
+      </div>
+    </div>
     <script src="task.js"></script>
   </body>
 </html>

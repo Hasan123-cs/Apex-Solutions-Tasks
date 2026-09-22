@@ -138,3 +138,74 @@ td {
 .gender-buttons button.active {
   background-color: #5b6ee1;
 }
+.modal {
+  display: none;
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.3);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+
+  width: 350px;
+
+  padding: 25px;
+}
+
+.cancel-btn {
+  width: 120px;
+  height: 35px;
+
+  background: #8d99ae;
+
+  color: white;
+
+  border: none;
+
+  margin-right: 15px;
+}
+
+.delete-confirm-btn {
+  width: 120px;
+  height: 35px;
+
+  background: #ef3348;
+
+  color: white;
+
+  border: none;
+}
+.pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  width: 50px;
+  height: 35px;
+  border: none;
+  background: #8d99ae;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #5b6ee1;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

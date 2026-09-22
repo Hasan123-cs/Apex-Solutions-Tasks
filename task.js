@@ -5,10 +5,14 @@ let timeLeft;
 let editingUserId = null;
 // remember last for reverse and know what the direction of sorting
 let sortColumn = null;
+let selectedUserToDelete = null;
 let sortDirection = "asc";
 const savedUsers = localStorage.getItem("users");
 let users = [];
 let selectedGenderFilter = "all"; // by default search using all genders
+let currentPage = 1;
+const usersPerPage = 5;
+let totalPages = 1;
 // get byy id
 const form = document.getElementById("MyForm");
 const firstName = document.getElementById("firstName");
@@ -25,6 +29,12 @@ const duplicateError = document.getElementById("duplicateError");
 const genderStatus = document.getElementById("genderStatus");
 const genderError = document.getElementById("genderError");
 const formError = document.getElementById("formError");
+const deleteModal = document.getElementById("deleteModal");
+const deleteUserName = document.getElementById("deleteUserName");
+const pageNumbers = document.getElementById("pageNumbers");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const showingUsers = document.getElementById("showingUsers");
 // we do this because after error we change so must delete the old error
 firstName.addEventListener("input", function () {
   duplicateError.textContent = "";
@@ -166,6 +176,7 @@ form.addEventListener("submit", function (event) {
   saveBtn.disabled = true;
 });
 searchInput.addEventListener("input", function () {
+  currentPage = 1;
   displayUsers();
 });
 function checkifFormisValidToSubmit() {
@@ -181,13 +192,31 @@ Gender.addEventListener("change", checkifFormisValidToSubmit);
 
 // first action delte useer
 function deleteUser(id) {
-  users = users.filter(function (user) {
-    return user.id !== id;
+  const user = users.find(function (user) {
+    return user.id === id;
   });
 
+  selectedUserToDelete = user;
+
+  deleteUserName.textContent = `${user.firstName} ${user.lastName}`;
+
+  deleteModal.style.display = "flex";
+}
+function cancelDelete() {
+  selectedUserToDelete = null;
+
+  deleteModal.style.display = "none";
+}
+function confirmDelete() {
+  users = users.filter(function (user) {
+    return user.id !== selectedUserToDelete.id;
+  });
   saveUsers();
-  startTimer();
   displayUsers();
+  updateUserCount();
+  currentPage = 1;
+  selectedUserToDelete = null;
+  deleteModal.style.display = "none";
 }
 // now to display the users
 function displayUsers() {
@@ -224,8 +253,15 @@ function displayUsers() {
       return 0;
     });
   }
+  totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  createPageButtons(totalPages);
+  const startIndex = (currentPage - 1) * usersPerPage;
 
-  filteredUsers.forEach(function (user) {
+  const endIndex = startIndex + usersPerPage;
+
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  paginatedUsers.forEach(function (user) {
     userTable.innerHTML += `
       <tr>
         <td>${user.id}</td>
@@ -245,6 +281,10 @@ function displayUsers() {
     `;
   });
   updateUserCount();
+  showingUsers.textContent = `Showing ${startIndex + 1}-${Math.min(endIndex, filteredUsers.length)} of ${filteredUsers.length} users`;
+  prevBtn.disabled = currentPage === 1;
+
+  nextBtn.disabled = currentPage === totalPages;
 }
 
 function startTimer() {
@@ -349,7 +389,40 @@ function filterByGender(gender) {
   if (gender === "female") {
     document.getElementById("femaleBtn").classList.add("active");
   }
+  currentPage = 1;
   selectedGenderFilter = gender.toLowerCase();
   genderStatus.textContent = `Showing : ${gender}`;
   displayUsers();
+}
+function createPageButtons(totalPages) {
+  pageNumbers.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.innerHTML += `
+            <button 
+            onclick="goToPage(${i})"
+            class="${currentPage === i ? "active" : ""}">
+                ${i}
+            </button>
+        `;
+  }
+}
+function goToPage(page) {
+  currentPage = page;
+
+  displayUsers();
+}
+function nextPage() {
+  if (currentPage < totalPages) {
+    currentPage++;
+
+    displayUsers();
+  }
+}
+function previousPage() {
+  if (currentPage > 1) {
+    currentPage--;
+
+    displayUsers();
+  }
 }
