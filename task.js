@@ -23,6 +23,8 @@ const searchInput = document.getElementById("searchInput");
 const countUser = document.getElementById("countUser");
 const duplicateError = document.getElementById("duplicateError");
 const genderStatus = document.getElementById("genderStatus");
+const genderError = document.getElementById("genderError");
+const formError = document.getElementById("formError");
 // we do this because after error we change so must delete the old error
 firstName.addEventListener("input", function () {
   duplicateError.textContent = "";
@@ -52,30 +54,81 @@ function saveUsers() {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
-form.addEventListener("submit", function (event) {
-  // for no refresh un page
-  event.preventDefault();
-  const firstNameValue = firstName.value.trim();
-  const lastNameValue = lastName.value.trim();
+// form validation
+function validateForm() {
   let isValid = true;
 
-  if (firstNameValue.length < 3) {
-    firstNameError.textContent = "First name must be at least 3 characters";
+  const firstNameValue = firstName.value.trim();
+  const lastNameValue = lastName.value.trim();
+
+  // First name
+
+  if (firstNameValue === "") {
+    firstNameError.textContent = "First name is required";
+
+    isValid = false;
+  } else if (firstNameValue.length < 2) {
+    firstNameError.textContent = "Minimum 2 characters are required";
+
+    isValid = false;
+  } else if (/\d/.test(firstNameValue)) {
+    firstNameError.textContent = "Name cannot contain numbers";
+
     isValid = false;
   } else {
     firstNameError.textContent = "";
   }
 
-  if (lastNameValue.length < 3) {
-    lastNameError.textContent = "Last name must be at least 3 characters";
+  // Last name
+
+  if (lastNameValue === "") {
+    lastNameError.textContent = "Last name is required";
+
+    isValid = false;
+  } else if (lastNameValue.length < 2) {
+    lastNameError.textContent = "Minimum 2 characters are required";
+
+    isValid = false;
+  } else if (/\d/.test(lastNameValue)) {
+    lastNameError.textContent = "Name cannot contain numbers";
+
     isValid = false;
   } else {
     lastNameError.textContent = "";
   }
-  // stop the page if its invalid
-  if (!isValid) {
+
+  // Gender
+
+  if (Gender.value === "") {
+    genderError.textContent = "Please select a gender";
+
+    isValid = false;
+  } else {
+    genderError.textContent = "";
+  }
+
+  if (isValid) {
+    saveBtn.disabled = false;
+    formError.textContent = "";
+  } else {
+    saveBtn.disabled = true;
+    formError.textContent =
+      "The user cannot be saved until all fields are valid.";
+  }
+
+  return isValid;
+}
+// === form validation ===
+
+form.addEventListener("submit", function (event) {
+  // for no refresh un page
+  event.preventDefault();
+  const firstNameValue = firstName.value.trim();
+  const lastNameValue = lastName.value.trim();
+  if (!validateForm()) {
     return;
   }
+  console.log("hi");
   // now push dosent work like the old since we have 2 state update and create so based on the id
   // remembeerd we can deduce where we are
   if (editingUserId === null) {

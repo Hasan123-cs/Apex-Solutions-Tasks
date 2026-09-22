@@ -26,14 +26,17 @@
 
         <div class="form-group">
           <label for="Gender">Gender</label>
+
           <select id="selectedGender">
             <option value="" selected>Select a Gender</option>
             <option value="male">male</option>
             <option value="female">female</option>
           </select>
+          <small id="genderError" class="error-message"></small>
         </div>
         <small id="duplicateError" class="error-message"></small>
         <button id="saveBtn" disabled>save</button>
+        <small id="formError" class="error-message"></small>
       </form>
       <h2>Search Users</h2>
 
