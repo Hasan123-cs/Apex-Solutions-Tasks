@@ -1,3 +1,4 @@
+// variabls
 let timer;
 let timeLeft;
 // what mean ? when click edit the editingUserId contain the id 1234-asncds...
@@ -7,6 +8,8 @@ let sortColumn = null;
 let sortDirection = "asc";
 const savedUsers = localStorage.getItem("users");
 let users = [];
+let selectedGenderFilter = "all"; // by default search using all genders
+// get byy id
 const form = document.getElementById("MyForm");
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
@@ -19,6 +22,7 @@ const lastNameError = document.getElementById("lastNameError");
 const searchInput = document.getElementById("searchInput");
 const countUser = document.getElementById("countUser");
 const duplicateError = document.getElementById("duplicateError");
+const genderStatus = document.getElementById("genderStatus");
 // we do this because after error we change so must delete the old error
 firstName.addEventListener("input", function () {
   duplicateError.textContent = "";
@@ -138,12 +142,17 @@ function displayUsers() {
   // lets explain how work this part
   // 1- if we enter nothing so "" include in all so display the all
   // 2- if emter any keyword in the first/last name its appear directly
+  // 3- make the logic of gender by match genders
   const searchValue = searchInput.value.toLowerCase().trim();
   const filteredUsers = users.filter(function (user) {
-    return (
+    const matchesSearch =
       user.firstName.toLowerCase().includes(searchValue) ||
-      user.lastName.toLowerCase().includes(searchValue)
-    );
+      user.lastName.toLowerCase().includes(searchValue);
+    const matchesGender =
+      selectedGenderFilter === "all" ||
+      user.gender.toLowerCase() === selectedGenderFilter;
+
+    return matchesSearch && matchesGender;
   });
 
   filteredUsers.forEach(function (user) {
@@ -272,5 +281,25 @@ function ClearAll() {
   clearInterval(timer);
   startTimer();
   form.reset();
+  displayUsers();
+}
+function filterByGender(gender) {
+  document.getElementById("allBtn").classList.remove("active");
+  document.getElementById("maleBtn").classList.remove("active");
+  document.getElementById("femaleBtn").classList.remove("active");
+
+  if (gender === "all") {
+    document.getElementById("allBtn").classList.add("active");
+  }
+
+  if (gender === "male") {
+    document.getElementById("maleBtn").classList.add("active");
+  }
+
+  if (gender === "female") {
+    document.getElementById("femaleBtn").classList.add("active");
+  }
+  selectedGenderFilter = gender.toLowerCase();
+  genderStatus.textContent = `Showing : ${gender}`;
   displayUsers();
 }
