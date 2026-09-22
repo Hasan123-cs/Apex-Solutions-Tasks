@@ -154,6 +154,23 @@ function displayUsers() {
 
     return matchesSearch && matchesGender;
   });
+  // 2- Apply sorting only on displayed users
+  if (sortColumn !== null) {
+    filteredUsers.sort(function (a, b) {
+      let valueA = a[sortColumn].toLowerCase();
+      let valueB = b[sortColumn].toLowerCase();
+
+      if (valueA < valueB) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+
+      if (valueA > valueB) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+
+      return 0;
+    });
+  }
 
   filteredUsers.forEach(function (user) {
     userTable.innerHTML += `
@@ -226,26 +243,6 @@ function sortUsers(column) {
     sortColumn = column;
     sortDirection = "asc";
   }
-  //  compare 2 object in the array (base on column choose )
-  // if -1 mean x before y if 1 the reverse if 0 so no change
-  // and change based on the number
-  users.sort(function (a, b) {
-    let valueA = a[column];
-    let valueB = b[column];
-
-    valueA = String(valueA).toLowerCase();
-    valueB = String(valueB).toLowerCase();
-
-    if (valueA < valueB) {
-      return sortDirection === "asc" ? -1 : 1;
-    }
-
-    if (valueA > valueB) {
-      return sortDirection === "asc" ? 1 : -1;
-    }
-
-    return 0;
-  });
 
   updateSortArrows();
   displayUsers();
