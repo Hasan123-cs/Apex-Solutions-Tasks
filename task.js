@@ -231,3 +231,16 @@ function updateSortArrows() {
       sortDirection === "asc" ? "↑" : "↓";
   }
 }
+function ClearAll() {
+  // 1- clear the array
+  users = [];
+  // 2- update local storage
+
+  saveUsers();
+
+  // 1- update the ui and timer
+  clearInterval(timer);
+  startTimer();
+  form.reset();
+  displayUsers();
+}

@@ -74,3 +74,22 @@ td {
   cursor: pointer;
   font-size: inherit;
 }
+.clear-all-btn {
+  width: 220px;
+  height: 45px;
+  background-color: #ef3348;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+
+.clear-all-btn:hover {
+  background-color: #d92b3e;
+}
