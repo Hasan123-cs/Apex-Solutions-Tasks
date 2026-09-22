@@ -35,6 +35,9 @@ const pageNumbers = document.getElementById("pageNumbers");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const showingUsers = document.getElementById("showingUsers");
+const totalUsers = document.getElementById("totalUsers");
+const maleUsers = document.getElementById("maleUsers");
+const femaleUsers = document.getElementById("femaleUsers");
 // we do this because after error we change so must delete the old error
 firstName.addEventListener("input", function () {
   duplicateError.textContent = "";
@@ -56,6 +59,7 @@ function updateUserCount() {
 if (savedUsers) {
   users = JSON.parse(savedUsers);
   updateUserCount();
+  updateStatistics();
   displayUsers();
 } else {
   updateUserCount();
@@ -174,6 +178,7 @@ form.addEventListener("submit", function (event) {
   saveBtn.textContent = "Save";
   form.reset();
   saveBtn.disabled = true;
+  updateStatistics();
 });
 searchInput.addEventListener("input", function () {
   currentPage = 1;
@@ -283,7 +288,7 @@ function displayUsers() {
   updateUserCount();
   showingUsers.textContent = `Showing ${startIndex + 1}-${Math.min(endIndex, filteredUsers.length)} of ${filteredUsers.length} users`;
   prevBtn.disabled = currentPage === 1;
-
+  updateStatistics();
   nextBtn.disabled = currentPage === totalPages;
 }
 
@@ -372,6 +377,7 @@ function ClearAll() {
   startTimer();
   form.reset();
   displayUsers();
+  updateStatistics();
 }
 function filterByGender(gender) {
   document.getElementById("allBtn").classList.remove("active");
@@ -425,4 +431,21 @@ function previousPage() {
 
     displayUsers();
   }
+}
+function updateStatistics() {
+  const total = users.length;
+
+  const male = users.filter(function (user) {
+    return user.gender.toLowerCase() === "male";
+  }).length;
+
+  const female = users.filter(function (user) {
+    return user.gender.toLowerCase() === "female";
+  }).length;
+
+  totalUsers.textContent = total;
+
+  maleUsers.textContent = male;
+
+  femaleUsers.textContent = female;
 }

@@ -209,3 +209,31 @@ td {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.stats-container {
+  display: flex;
+  margin: 20px 0;
+}
+
+.stat-card {
+  flex: 1;
+
+  text-align: center;
+
+  padding: 20px;
+
+  border: 1px solid #ddd;
+
+  background: #f5f6fa;
+}
+
+.stat-card h4 {
+  margin: 0;
+
+  color: #53627c;
+}
+
+.stat-card span {
+  font-size: 25px;
+
+  font-weight: bold;
+}
