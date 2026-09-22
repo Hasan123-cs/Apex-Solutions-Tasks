@@ -18,6 +18,22 @@ const firstNameError = document.getElementById("firstNameError");
 const lastNameError = document.getElementById("lastNameError");
 const searchInput = document.getElementById("searchInput");
 const countUser = document.getElementById("countUser");
+const duplicateError = document.getElementById("duplicateError");
+// we do this because after error we change so must delete the old error
+firstName.addEventListener("input", function () {
+  duplicateError.textContent = "";
+});
+lastName.addEventListener("input", function () {
+  duplicateError.textContent = "";
+});
+function isDuplicateUser(firstName, lastName) {
+  return users.some(function (user) {
+    return (
+      user.firstName.toLowerCase() === firstName.toLowerCase() &&
+      user.lastName.toLowerCase() === lastName.toLowerCase()
+    );
+  });
+}
 function updateUserCount() {
   countUser.textContent = `Total Users: ${users.length}`;
 }
@@ -59,6 +75,12 @@ form.addEventListener("submit", function (event) {
   // now push dosent work like the old since we have 2 state update and create so based on the id
   // remembeerd we can deduce where we are
   if (editingUserId === null) {
+    // check duplicate
+    if (isDuplicateUser(firstNameValue, lastNameValue)) {
+      duplicateError.textContent = "This user already exists";
+      return;
+    }
+
     // here no update its create state so do the old
     users.push({
       id: crypto.randomUUID(),
