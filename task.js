@@ -17,14 +17,21 @@ const timerElement = document.getElementById("timer");
 const firstNameError = document.getElementById("firstNameError");
 const lastNameError = document.getElementById("lastNameError");
 const searchInput = document.getElementById("searchInput");
+const countUser = document.getElementById("countUser");
+function updateUserCount() {
+  countUser.textContent = `Total Users: ${users.length}`;
+}
 if (savedUsers) {
   users = JSON.parse(savedUsers);
+  updateUserCount();
   displayUsers();
+} else {
+  updateUserCount();
 }
-
 function saveUsers() {
   localStorage.setItem("users", JSON.stringify(users));
 }
+
 form.addEventListener("submit", function (event) {
   // for no refresh un page
   event.preventDefault();
@@ -136,6 +143,7 @@ function displayUsers() {
       </tr>
     `;
   });
+  updateUserCount();
 }
 
 function startTimer() {

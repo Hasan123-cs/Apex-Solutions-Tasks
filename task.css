@@ -93,3 +93,13 @@ td {
 .clear-all-btn:hover {
   background-color: #d92b3e;
 }
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+#countUser {
+  color: #536dfe;
+  font-weight: bold;
+  font-size: 18px;
+}
