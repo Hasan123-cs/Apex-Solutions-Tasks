@@ -10,7 +10,11 @@
 
   <body>
     <h1>Countries Flags</h1>
+    <div class="favorite-filter">
+      <input type="checkbox" id="showFavorites" />
 
+      <label for="showFavorites"> Show Favorites Only </label>
+    </div>
     <table>
       <thead>
         <tr>
@@ -24,9 +28,7 @@
         </tr>
       </thead>
 
-      <tbody id="countryTable">
-        <!-- JavaScript will add countries here -->
-      </tbody>
+      <tbody id="countryTable"></tbody>
     </table>
 
     <div class="pagination">
@@ -36,7 +38,27 @@
 
       <button id="next">Next</button>
     </div>
+    <div id="countryModal" class="modal">
+      <div class="modal-card">
+        <h2>Country Details</h2>
 
+        <img id="modalFlag" width="100" />
+
+        <p><b>Name:</b> <span id="modalName"></span></p>
+
+        <p><b>Capital:</b> <span id="modalCapital"></span></p>
+
+        <p><b>Population:</b> <span id="modalPopulation"></span></p>
+
+        <p><b>Region:</b> <span id="modalRegion"></span></p>
+
+        <p><b>Subregion:</b> <span id="modalSubregion"></span></p>
+
+        <p><b>Languages:</b> <span id="modalLanguages"></span></p>
+
+        <button id="closeModal">Close</button>
+      </div>
+    </div>
     <script src="Flag-Task.js"></script>
   </body>
 </html>
