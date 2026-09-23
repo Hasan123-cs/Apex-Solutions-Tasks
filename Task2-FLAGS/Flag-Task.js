@@ -1,12 +1,14 @@
-const API_KEY = "rc_live_a3ba6ce1de0b46ff880de34c9b01092a";
+import { API_KEY, API_URL } from "./config.js";
+let loading = false;
 
-const API_URL = "https://api.restcountries.com/countries/v5";
-
+let apiError = false;
 let countries = [];
+let minPopulation = null;
 
+let maxPopulation = null;
 let currentPage = 1;
 let showFavoritesOnly = false;
-const rowsPerPage = 5;
+let rowsPerPage = 5;
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 // events listener
 document.getElementById("closeModal").addEventListener("click", () => {
@@ -24,35 +26,150 @@ document.getElementById("showFavorites").addEventListener("change", () => {
 
   displayCountries();
 });
+document
+  .getElementById("applyPopulationFilter")
+  .addEventListener("click", () => {
+    const minValue = document.getElementById("minPopulation").value;
 
+    const maxValue = document.getElementById("maxPopulation").value;
+
+    const newMin = minValue !== "" ? Number(minValue) : null;
+
+    const newMax = maxValue !== "" ? Number(maxValue) : null;
+
+    const error = document.getElementById("populationError");
+
+    error.innerHTML = "";
+
+    if ((newMin !== null && newMin < 0) || (newMax !== null && newMax < 0)) {
+      error.innerHTML = "Population cannot be negative";
+
+      return;
+    }
+
+    if (newMin !== null && newMax !== null && newMin > newMax) {
+      error.innerHTML =
+        "Minimum population cannot be greater than maximum population.";
+
+      return;
+    }
+
+    minPopulation = newMin;
+
+    maxPopulation = newMax;
+
+    currentPage = 1;
+
+    displayCountries();
+  });
+document
+  .getElementById("resetPopulationFilter")
+  .addEventListener("click", () => {
+    // clear inputs
+    document.getElementById("minPopulation").value = "";
+
+    document.getElementById("maxPopulation").value = "";
+
+    // remove population filter
+    minPopulation = null;
+
+    maxPopulation = null;
+
+    // remove error
+    document.getElementById("populationError").innerHTML = "";
+
+    // go back page 1
+    currentPage = 1;
+
+    displayCountries();
+  });
+
+document.getElementById("countriesPerPage").addEventListener("change", () => {
+  rowsPerPage = Number(document.getElementById("countriesPerPage").value);
+
+  currentPage = 1;
+
+  displayCountries();
+});
+document.getElementById("randomCountryBtn").addEventListener("click", () => {
+  if (countries.length === 0) {
+    return;
+  }
+  const randomIndex = Math.floor(Math.random() * countries.length);
+  const randomCountry = countries[randomIndex];
+  openCountryModal(randomCountry);
+});
 // ===events listener===
 // handlers
-function getCountries() {
-  let requests = [];
+async function getCountries() {
+  const table = document.getElementById("countryTable");
+  // loading state
+  table.innerHTML = `
+    <tr>
+    <td colspan="4">
+    <h3>
+    Loading countries...
+    </h3>
+    </td>
+    </tr>
+    `;
 
-  for (let offset = 0; offset < 300; offset += 25) {
-    requests.push(
-      fetch(`${API_URL}?offset=${offset}`, {
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      }).then((response) => response.json()),
+  countries = [];
+
+  try {
+    let requests = [];
+
+    for (let offset = 0; offset < 300; offset += 25) {
+      requests.push(
+        fetch(`${API_URL}?offset=${offset}`, {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        }),
+      );
+    }
+
+    const responses = await Promise.all(requests);
+    // check API response
+
+    for (const response of responses) {
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
+    }
+
+    const results = await Promise.all(
+      responses.map((response) => response.json()),
     );
-  }
 
-  Promise.all(requests)
+    countries = results.flatMap((result) => result.data.objects);
 
-    .then((results) => {
-      countries = results.flatMap((result) => result.data.objects);
+    console.log("Total:", countries.length);
 
-      console.log("Total:", countries.length);
+    displayCountries();
+  } catch (error) {
+    console.log(error);
+    table.innerHTML = `
 
-      displayCountries();
-    })
+        <tr>
+        <td colspan="4">
+        <h2 style="color:red">
+        Unable to load countries.
+        </h2>
+        <p>
+        Please check your internet connection and try again.
+        </p>
+        <button id="retryBtn">
+        Try Again
+        </button>
+        </td>
+        </tr>
+        `;
 
-    .catch((error) => {
-      console.log(error);
+    document.getElementById("retryBtn").addEventListener("click", () => {
+      getCountries();
     });
+  }
 }
 function displayCountries() {
   const table = document.getElementById("countryTable");
@@ -64,6 +181,20 @@ function displayCountries() {
       return isFavorite(country);
     });
   }
+  // Population filter
+
+  if (minPopulation !== null) {
+    filteredCountries = filteredCountries.filter((country) => {
+      return country.population >= minPopulation;
+    });
+  }
+
+  if (maxPopulation !== null) {
+    filteredCountries = filteredCountries.filter((country) => {
+      return country.population <= maxPopulation;
+    });
+  }
+
   const totalPages = Math.ceil(filteredCountries.length / rowsPerPage);
   if (currentPage > totalPages && totalPages > 0) {
     currentPage = totalPages;
@@ -75,7 +206,7 @@ function displayCountries() {
     table.innerHTML = `
       <tr>
         <td colspan="4">
-          No favorite countries found
+          No  countries found
         </td>
       </tr>
     `;
@@ -147,28 +278,43 @@ function displayCountries() {
 
   document.getElementById("pageNumber").innerText =
     `${currentPage} of ${totalPages}`;
+  document.getElementById("prev").disabled = currentPage === 1;
+
+  document.getElementById("next").disabled = currentPage === totalPages;
 }
 document.getElementById("next").addEventListener("click", () => {
-  const totalPages = Math.ceil(countries.length / rowsPerPage);
+  let filteredCountries = countries;
+  if (showFavoritesOnly) {
+    filteredCountries = filteredCountries.filter((country) => {
+      return isFavorite(country);
+    });
+  }
+  if (minPopulation !== null) {
+    filteredCountries = filteredCountries.filter((country) => {
+      return country.population >= minPopulation;
+    });
+  }
+
+  if (maxPopulation !== null) {
+    filteredCountries = filteredCountries.filter((country) => {
+      return country.population <= maxPopulation;
+    });
+  }
+
+  const totalPages = Math.ceil(filteredCountries.length / rowsPerPage);
 
   if (currentPage < totalPages) {
     currentPage++;
 
     displayCountries();
-    document.getElementById("prev").disabled = false;
-  } else {
-    document.getElementById("next").disabled = true;
   }
 });
 
 document.getElementById("prev").addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
-    document.getElementById("next").disabled = false;
 
     displayCountries();
-  } else {
-    document.getElementById("prev").disabled = true;
   }
 });
 function openCountryModal(country) {

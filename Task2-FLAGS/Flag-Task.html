@@ -10,10 +10,45 @@
 
   <body>
     <h1>Countries Flags</h1>
-    <div class="favorite-filter">
-      <input type="checkbox" id="showFavorites" />
+    <div class="population-filter">
+      <label> Minimum Population </label>
 
-      <label for="showFavorites"> Show Favorites Only </label>
+      <input type="number" id="minPopulation" />
+
+      <label> Maximum Population </label>
+
+      <input type="number" id="maxPopulation" />
+
+      <button id="applyPopulationFilter">Apply Filter</button>
+
+      <button id="resetPopulationFilter">Reset</button>
+
+      <p id="populationError"></p>
+    </div>
+    <div
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <div class="favorite-filter">
+        <input type="checkbox" id="showFavorites" />
+
+        <label for="showFavorites"> Show Favorites Only </label>
+      </div>
+      <div class="countries-page">
+        <label> Countries per page: </label>
+
+        <select id="countriesPerPage">
+          <option value="5" selected>5</option>
+
+          <option value="10">10</option>
+
+          <option value="20">20</option>
+
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="random-country">
+        <button id="randomCountryBtn">🎲 Random Country</button>
+      </div>
     </div>
     <table>
       <thead>
@@ -27,7 +62,7 @@
           <th>Favorite</th>
         </tr>
       </thead>
-
+      <div id="statusMessage"></div>
       <tbody id="countryTable"></tbody>
     </table>
 
@@ -59,6 +94,6 @@
         <button id="closeModal">Close</button>
       </div>
     </div>
-    <script src="Flag-Task.js"></script>
+    <script type="module" src="Flag-Task.js"></script>
   </body>
 </html>
