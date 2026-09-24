@@ -1,16 +1,31 @@
+.card {
+  display: flex;
+  padding: 10px;
+  width: 270px;
+  height: 150px;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 2px solid gray;
+  box-sizing: border-box;
+
+  justify-content: space-between;
+}
+.card-header {
+  background-color: #716f6f84;
+  padding: 2%;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
 .container {
   width: 1000px;
-  background-color: rgba(0, 0, 0, 0.847);
-  border-radius: 5px;
+  height: 400px;
   display: flex;
-  justify-content: space-between;
+  background-color: #eee;
   align-items: center;
-  padding: 0 30px;
-}
-.links {
-  width: 25%;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: center; */
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  gap: 20px;
 }
