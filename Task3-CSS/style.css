@@ -1,31 +1,98 @@
-.card {
-  display: flex;
-  padding: 10px;
-  width: 270px;
-  height: 150px;
-  flex-direction: column;
-  border-radius: 5px;
-  border: 2px solid gray;
+* {
   box-sizing: border-box;
+}
 
+body {
+  padding: 30px;
+}
+
+.navbar {
+  background-color: #1f2937;
+  height: 60px;
+
+  display: flex;
   justify-content: space-between;
-}
-.card-header {
-  background-color: #716f6f84;
-  padding: 2%;
-}
-.card-body {
-  display: flex;
-  flex-direction: column;
-}
-.container {
-  width: 1000px;
-  height: 400px;
-  display: flex;
-  background-color: #eee;
   align-items: center;
-  /* justify-content: center; */
-  flex-wrap: wrap;
-  box-sizing: border-box;
+
+  padding: 0 20px;
+
+  border-radius: 5px;
+  color: white;
+}
+
+.logo {
+  font-weight: bold;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+.main-container {
+  margin-top: 15px;
+
+  display: flex;
+
   gap: 20px;
+
+  background-color: #f1f5f9;
+
+  padding: 20px;
+}
+
+.sidebar {
+  width: 150px;
+
+  background-color: #e5e7eb;
+
+  padding: 15px;
+
+  border-radius: 5px;
+}
+
+.products {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 15px;
+}
+
+.card {
+  width: 160px;
+
+  height: 150px;
+
+  background-color: white;
+
+  border: 1px solid gray;
+
+  border-radius: 5px;
+
+  padding: 10px;
+}
+
+.image {
+  height: 50px;
+
+  background-color: #dbeafe;
+}
+
+.card h4 {
+  margin: 10px 0 5px;
+}
+
+.card p {
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+
+  margin-top: 20px;
 }

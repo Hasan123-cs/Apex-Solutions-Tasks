@@ -3,61 +3,70 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Cards</title>
+    <title>FlexShop</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <h2>Responsive cards</h2>
+    <header class="navbar">
+      <div class="logo">FlexShop</div>
 
-    <div class="container">
-      <div class="card">
-        <div class="card-header">Card 1</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
-        </div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Products</a>
+        <a href="#">Login</a>
       </div>
+    </header>
 
-      <div class="card">
-        <div class="card-header">Card 2</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
-        </div>
-      </div>
+    <main class="main-container">
+      <aside class="sidebar">
+        <h3>Categories</h3>
+        <p>Laptops</p>
+        <p>Phones</p>
+        <p>Tablets</p>
+      </aside>
 
-      <div class="card">
-        <div class="card-header">Card 3</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
+      <section class="products">
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">Card 4</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">Card 5</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
         </div>
-      </div>
 
-      <div class="card">
-        <div class="card-header">Card 6</div>
-        <div class="card-body">
-          <span>Some card content</span>
-          <span>goes here...</span>
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
         </div>
-      </div>
-    </div>
+
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
+        </div>
+
+        <div class="card">
+          <div class="image"></div>
+          <h4>Product</h4>
+          <p>$99</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Products should wrap when the screen becomes smaller.</p>
+    </footer>
   </body>
 </html>
