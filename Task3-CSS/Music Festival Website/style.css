@@ -594,12 +594,9 @@ h1 span {
     flex-direction:column;
 
 }
-.ticket-card.popular {
-
-    height:270px;
-
+.ticket-card.popular{
+    min-height:320px;
     border:1px solid #ff4fa3;
-
 }
 .ticket-card h3 {
 
@@ -682,22 +679,24 @@ h1 span {
 }
 .ticket-card.popular button {
 
-    margin-top:auto;
+        margin-top:auto;
 
     padding:12px 25px;
 
     border-radius:30px;
 
-    border:none;
+    border:1px solid #aaa6c5;
 
-  background: linear-gradient(90deg, #ff3fa4, #8b5cff);
-
+    background: linear-gradient(90deg, #ff3fa4, #8b5cff);
 
     color:white;
 
     font-weight:bold;
 
     cursor:pointer;
+   
+
+
 
 }
 .gallery {
