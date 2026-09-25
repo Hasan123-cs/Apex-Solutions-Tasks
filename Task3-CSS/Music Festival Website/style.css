@@ -439,6 +439,7 @@ h1 span {
 .day-tabs {
 
     display:flex;
+    max-width:100%;
 
     background:#171329;
 
@@ -454,7 +455,8 @@ h1 span {
 
     color:#aaa6c5;
 
-    padding:10px 18px;
+    padding:10px 14px;
+    font-size:12px;
 
     border-radius:20px;
 
@@ -732,30 +734,20 @@ h1 span {
     font-size:14px;
 
 }
-.photos {
-
+.photos{
     display:flex;
-
+    flex-wrap:wrap;
     gap:10px;
-
 }
-.photo {
-
+.photo{
     height:120px;
-
-    flex-grow:1;
-
+    flex:1;
+    min-width:120px;
     border-radius:15px;
-
-    background:#211b42;
-
 }
-
 .photo.first,
 .photo.last {
-
-    flex-grow:2;
-
+    flex-grow:1;
 }
 .photo:nth-child(1){
 
@@ -934,7 +926,7 @@ h1 span {
 .footer-column h3 {
 
     color:white;
-
+    flex-direction: column;
     font-size:14px;
 
 }
@@ -946,6 +938,12 @@ h1 span {
 
     font-size:14px;
 
+}
+.footer-links {
+    display: flex;
+    width:100%;
+    gap:5px;
+    flex-direction:column;
 }
 .footer-column a:hover {
 
@@ -1011,23 +1009,23 @@ h1 span {
 
 @media(max-width:640px){
 
-    .navbar {
-
+    .nav-bar{
         flex-direction:column;
-
-        align-items:center;
-
         gap:20px;
-
+        padding:20px;
     }
 
-.stats {
+    .links{
+        width:100%;
+        justify-content:center;
+        gap:15px;
+        flex-wrap:wrap;
+    }
 
-    display:flex;
+    .Get-Ticket-btn{
+        width:100%;
+    }
 
-    flex-wrap:wrap;
-
-}
 }
     @media(max-width:700px){
 
@@ -1100,5 +1098,94 @@ flex-wrap:wrap;
 margin-left:80px;
 
 }
+
+}
+@media(max-width:700px){
+
+.hero{
+    padding:35px 25px;
+    gap:30px;
+}
+
+.hero-text{
+    gap:20px;
+}
+
+h1{
+    font-size:42px;
+}
+
+.hero-text p{
+    font-size:14px;
+}
+
+.image-box{
+    height:250px;
+}
+
+}
+
+@media(max-width:600px){
+
+.schedule-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+}
+
+}
+
+
+    @media(max-width:600px){
+
+.schedule-row{
+    padding:20px;
+    gap:15px;
+}
+
+.time{
+    width:60px;
+}
+
+.artist h3{
+    font-size:15px;
+}
+
+.genre{
+    margin-left:0;
+}
+
+}
+
+@media(max-width:700px){
+
+.newsletter{
+    padding:25px;
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.subscribe-form{
+    width:100%;
+}
+
+.subscribe-form button{
+    padding:10px 18px;
+}
+
+}
+
+@media(max-width:700px){
+
+    .photos{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .photo{
+        flex:1 1 calc(50% - 10px);
+        height:90px;
+    }
 
 }
