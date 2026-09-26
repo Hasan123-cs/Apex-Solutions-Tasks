@@ -152,8 +152,8 @@ h1 span {
 }
 .time-box { 
 
-    width:60px;
-    height:60px;
+width:90px; 
+    height:90px;
 
     background:#171329;
 
@@ -174,11 +174,15 @@ h1 span {
 
 }
 .time-box h3 {
-    font-size:20px;
+      margin:0;
+    font-size:28px;
+    line-height:1;
 }
 
 .time-box p {
-    font-size:9px;
+         margin:8px 0 0;
+    color:#aaa6c5;
+    font-size:14px;
 }
 .image-box {
 
@@ -595,7 +599,7 @@ h1 span {
 
 }
 .ticket-card.popular{
-    min-height:320px;
+    min-height:450px;
     border:1px solid #ff4fa3;
 }
 .ticket-card h3 {
@@ -679,22 +683,14 @@ h1 span {
 }
 .ticket-card.popular button {
 
-        margin-top:auto;
-
-    padding:12px 25px;
-
+       width:100%;
+    padding:15px;
     border-radius:30px;
-
     border:1px solid #aaa6c5;
-
-    background: linear-gradient(90deg, #ff3fa4, #8b5cff);
-
+    background:linear-gradient(90deg,#ff3fa4,#8b5cff);
     color:white;
-
     font-weight:bold;
-
     cursor:pointer;
-   
 
 
 
@@ -1187,4 +1183,7 @@ h1{
         height:90px;
     }
 
+}
+html {
+    scroll-behavior: smooth;
 }
