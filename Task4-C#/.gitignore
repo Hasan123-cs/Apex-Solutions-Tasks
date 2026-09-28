@@ -1,0 +1,18 @@
+# Visual Studio
+.vs/
+**/.vs/
+
+# Build files
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+*.userosscache
+
+# Rider
+.idea/
+
+# Logs
+*.log

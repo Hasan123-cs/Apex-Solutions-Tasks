@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ConsoleApp1/TextToExcelDatabaseImporter.csproj" />
+  <Project Path="UserManagement/UserManagement.csproj" Id="c5c4cd45-7415-4f25-a1e6-228772528d1e" />
+</Solution>
