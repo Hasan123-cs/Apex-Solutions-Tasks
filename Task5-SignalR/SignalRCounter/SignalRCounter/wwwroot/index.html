@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>SignalR Counter</title>
+</head>
+
+
+<body>
+
+
+    <h1>
+        Visitors:
+        <span id="count">0</span>
+    </h1>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr/dist/browser/signalr.min.js">
+    </script>
+
+
+    <script>
+
+
+const connection =new signalR.HubConnectionBuilder().withUrl("/counterHub").build();
+
+
+
+
+connection.on("ReceiveCount", function (value) {
+    document.getElementById("count").innerHTML = value;
+});
+
+
+
+connection.start();
+
+
+
+    </script>
+
+
+</body>
+
+</html>

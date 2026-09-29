@@ -1,9 +1,43 @@
+using Enyim.Caching;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using UserManagement.Data;
 using UserManagement.Services;
-using Enyim.Caching;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+.AddAuthentication(
+    JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters =
+        new TokenValidationParameters
+        {
+            ValidateIssuer = true,
 
+            ValidateAudience = true,
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+
+
+            ValidIssuer =
+            builder.Configuration["Jwt:Issuer"],
+
+
+            ValidAudience =
+            builder.Configuration["Jwt:Audience"],
+
+
+            IssuerSigningKey =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                builder.Configuration["Jwt:Key"]!
+                ))
+        };
+});
 
 // Add Controllers
 builder.Services.AddControllers();
@@ -43,6 +77,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
