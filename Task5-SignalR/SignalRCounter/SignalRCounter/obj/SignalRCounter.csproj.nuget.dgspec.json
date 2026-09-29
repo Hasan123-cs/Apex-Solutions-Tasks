@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\FullStack_Assigment\\Barber-Salon-Booking-Platform\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj": {}
+    "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj": {}
   },
   "projects": {
-    "C:\\FullStack_Assigment\\Barber-Salon-Booking-Platform\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj": {
+    "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\FullStack_Assigment\\Barber-Salon-Booking-Platform\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj",
+        "projectUniqueName": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj",
         "projectName": "SignalRCounter",
-        "projectPath": "C:\\FullStack_Assigment\\Barber-Salon-Booking-Platform\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj",
+        "projectPath": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\SignalRCounter.csproj",
         "packagesPath": "C:\\Users\\SADEK-COMPUTER\\.nuget\\packages\\",
-        "outputPath": "C:\\FullStack_Assigment\\Barber-Salon-Booking-Platform\\SignalRCounter\\SignalRCounter\\obj\\",
+        "outputPath": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -59,6 +59,20 @@
             "Microsoft.AspNetCore.SignalR": {
               "target": "Package",
               "version": "[1.2.13, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

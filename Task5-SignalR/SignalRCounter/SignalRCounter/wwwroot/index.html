@@ -17,25 +17,153 @@
 
 
 
+    <h2>Users</h2>
+
+
+    <table border="1">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+
+
+        <tbody id="usersTable">
+        </tbody>
+
+
+    </table>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr/dist/browser/signalr.min.js">
     </script>
 
 
+
     <script>
 
+const connection =
+            new signalR.HubConnectionBuilder()
+                .withUrl("/counterHub")
+                .build();
 
-const connection =new signalR.HubConnectionBuilder().withUrl("/counterHub").build();
 
 
+connection.on(
+            "ReceiveCount",
+            function (value) {
 
+                document
+                .getElementById("count")
+                .innerHTML = value;
 
-connection.on("ReceiveCount", function (value) {
-    document.getElementById("count").innerHTML = value;
-});
+            });
 
 
 
 connection.start();
+
+
+
+
+
+
+const userConnection =
+            new signalR.HubConnectionBuilder()
+                .withUrl("/userHub")
+                .build();
+
+
+
+
+
+userConnection.on(
+            "ReceiveUser",
+            function (user) {
+
+
+                addUserRow(user);
+
+
+            });
+
+
+
+
+
+userConnection.start()
+.then(() => {
+
+            console.log("User Hub Connected");
+
+
+            loadUsers();
+
+});
+
+
+
+
+
+async function loadUsers()
+{
+
+            const response =
+                await fetch("/api/User");
+
+
+            const users =
+                await response.json();
+
+
+
+            users.forEach(user => {
+
+
+                addUserRow(user);
+
+
+            });
+
+
+}
+
+
+
+
+function addUserRow(user)
+{
+
+            let row = `
+
+                <tr>
+
+                    <td>${user.id}</td>
+
+                    <td>${user.name}</td>
+
+                    <td>${user.createdAt}</td>
+
+                </tr>
+
+            `;
+
+
+
+            document
+            .getElementById("usersTable")
+            .insertAdjacentHTML(
+                "beforeend",
+                row
+            );
+
+
+}
 
 
 
