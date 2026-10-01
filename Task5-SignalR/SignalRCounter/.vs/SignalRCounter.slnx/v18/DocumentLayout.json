@@ -3,32 +3,32 @@
   "WorkspaceRootPath": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\background\\usercreationbackgroundservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\background\\usercreationbackgroundservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\hubs\\counterhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\hubs\\counterhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\controller\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\controller\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\background\\usercreationbackgroundservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\background\\usercreationbackgroundservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\hubs\\userhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\hubs\\userhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\hubs\\counterhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\hubs\\counterhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|solutionrelative:signalrcounter\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C8154BCF-03ED-EC83-83F1-3562891500BB}|SignalRCounter\\SignalRCounter.csproj|c:\\jstest\\task5-signalr\\signalrcounter\\signalrcounter\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -50,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -79,15 +79,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CounterHub.cs",
-              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\CounterHub.cs",
-              "RelativeDocumentMoniker": "SignalRCounter\\Hubs\\CounterHub.cs",
-              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\CounterHub.cs",
-              "RelativeToolTip": "SignalRCounter\\Hubs\\CounterHub.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAxAAAAAAAAAA==",
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Controller\\UserController.cs",
+              "RelativeDocumentMoniker": "SignalRCounter\\Controller\\UserController.cs",
+              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Controller\\UserController.cs",
+              "RelativeToolTip": "SignalRCounter\\Controller\\UserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-29T15:45:32.473Z",
+              "WhenOpened": "2026-09-29T18:21:47.585Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "SignalRCounter\\wwwroot\\index.html",
+              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\wwwroot\\index.html",
+              "RelativeToolTip": "SignalRCounter\\wwwroot\\index.html",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-09-29T15:51:54.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserHub.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\UserHub.cs",
+              "RelativeDocumentMoniker": "SignalRCounter\\Hubs\\UserHub.cs",
+              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\UserHub.cs",
+              "RelativeToolTip": "SignalRCounter\\Hubs\\UserHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-29T18:29:34.228Z"
             },
             {
               "$type": "Document",
@@ -105,67 +129,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Program.cs",
+              "RelativeDocumentMoniker": "SignalRCounter\\Program.cs",
+              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Program.cs",
+              "RelativeToolTip": "SignalRCounter\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-29T15:43:56.559Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "UserCreationBackgroundService.cs",
               "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Background\\UserCreationBackgroundService.cs",
               "RelativeDocumentMoniker": "SignalRCounter\\Background\\UserCreationBackgroundService.cs",
               "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Background\\UserCreationBackgroundService.cs",
               "RelativeToolTip": "SignalRCounter\\Background\\UserCreationBackgroundService.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAgwCIAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwD0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-29T18:17:55.871Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UserController.cs",
-              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Controller\\UserController.cs",
-              "RelativeDocumentMoniker": "SignalRCounter\\Controller\\UserController.cs",
-              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Controller\\UserController.cs",
-              "RelativeToolTip": "SignalRCounter\\Controller\\UserController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-29T18:21:47.585Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\wwwroot\\index.html",
-              "RelativeDocumentMoniker": "SignalRCounter\\wwwroot\\index.html",
-              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\wwwroot\\index.html",
-              "RelativeToolTip": "SignalRCounter\\wwwroot\\index.html",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-09-29T15:51:54.121Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "UserHub.cs",
-              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\UserHub.cs",
-              "RelativeDocumentMoniker": "SignalRCounter\\Hubs\\UserHub.cs",
-              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\UserHub.cs",
-              "RelativeToolTip": "SignalRCounter\\Hubs\\UserHub.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Title": "CounterHub.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\CounterHub.cs",
+              "RelativeDocumentMoniker": "SignalRCounter\\Hubs\\CounterHub.cs",
+              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Hubs\\CounterHub.cs",
+              "RelativeToolTip": "SignalRCounter\\Hubs\\CounterHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-29T18:29:34.228Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Program.cs",
-              "RelativeDocumentMoniker": "SignalRCounter\\Program.cs",
-              "ToolTip": "C:\\JSTest\\Task5-SignalR\\SignalRCounter\\SignalRCounter\\Program.cs",
-              "RelativeToolTip": "SignalRCounter\\Program.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAIwB8AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-29T15:43:56.559Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-29T15:45:32.473Z"
             },
             {
               "$type": "Document",
@@ -177,8 +174,7 @@
               "RelativeToolTip": "SignalRCounter\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-09-29T18:16:51.991Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-29T18:16:51.991Z"
             },
             {
               "$type": "Document",
@@ -190,8 +186,7 @@
               "RelativeToolTip": "SignalRCounter\\Models\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-29T18:13:32.628Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-29T18:13:32.628Z"
             },
             {
               "$type": "Document",

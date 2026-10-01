@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|c:\\jstest\\task6-playright-(automation-testing)\\backend\\logintestdemo\\logintestdemo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|solutionrelative:logintestdemo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|c:\\jstest\\task6-playright-(automation-testing)\\backend\\logintestdemo\\logintestdemo\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|solutionrelative:logintestdemo\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|c:\\jstest\\task6-playright-(automation-testing)\\backend\\logintestdemo\\logintestdemo\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|solutionrelative:logintestdemo\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|c:\\jstest\\task6-playright-(automation-testing)\\backend\\logintestdemo\\logintestdemo\\controllers\\studentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{253086E3-60F9-4F2F-B173-D3E749DD1ADE}|LoginTestDemo\\LoginTestDemo.csproj|solutionrelative:logintestdemo\\controllers\\studentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{673a989b-a429-376c-a584-d56b20ce6e41}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StudentsController.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Controllers\\StudentsController.cs",
+              "RelativeDocumentMoniker": "LoginTestDemo\\Controllers\\StudentsController.cs",
+              "ToolTip": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Controllers\\StudentsController.cs",
+              "RelativeToolTip": "LoginTestDemo\\Controllers\\StudentsController.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAxwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-01T19:09:06.116Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\wwwroot\\index.html",
+              "RelativeDocumentMoniker": "LoginTestDemo\\wwwroot\\index.html",
+              "ToolTip": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\wwwroot\\index.html",
+              "RelativeToolTip": "LoginTestDemo\\wwwroot\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-10-01T18:21:03.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "LoginTestDemo\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "LoginTestDemo\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwBAAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-01T18:19:50.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Program.cs",
+              "RelativeDocumentMoniker": "LoginTestDemo\\Program.cs",
+              "ToolTip": "C:\\JSTest\\Task6-PlayRight-(Automation-Testing)\\Backend\\LoginTestDemo\\LoginTestDemo\\Program.cs",
+              "RelativeToolTip": "LoginTestDemo\\Program.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAQwC8AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-01T18:17:06.719Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 717,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

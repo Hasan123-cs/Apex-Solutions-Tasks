@@ -4,6 +4,19 @@
     "title": "SignalRCounter",
     "version": "1.0"
   },
-  "paths": { },
+  "paths": {
+    "/api/User": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
   "components": { }
 }
