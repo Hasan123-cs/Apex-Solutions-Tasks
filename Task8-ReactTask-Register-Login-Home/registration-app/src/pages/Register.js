@@ -204,9 +204,12 @@ return (
 
                     text="Successfully Registered"
 
-                    yesText="OK"
-
-                    onYes={goHome}
+                   buttons={[
+                  {
+                     text:"OK",
+                     action:goHome
+                         }
+                        ]}
 
                 />
 

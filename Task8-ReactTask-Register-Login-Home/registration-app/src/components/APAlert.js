@@ -2,10 +2,7 @@ import APButton from "./APButton";
 export default function APAlert({
     image,
     text,
-    yesText="Yes",
-    noText,
-    onYes,
-    onNo
+     buttons = []
 }) {
 
 
@@ -20,26 +17,24 @@ export default function APAlert({
                     {text}
                 </h2>
                 <div className="alert-buttons">
-                    <APButton
-
-                    text="Yes"
-
-                    onClick={onYes}
-
-                    />
-
+                    
+                    
                     {
-                        noText &&
+                        buttons.map((btn,index)=>(
 
-                        <APButton
+                            <APButton
 
-                        text="No"
-                                            
-                        onClick={onNo}
-                                            
-                        />
+                                key={index}
 
+                                text={btn.text}
+
+                                onClick={btn.action}
+
+                            />
+
+                        ))
                     }
+
                 </div>
             </div>
         </div>

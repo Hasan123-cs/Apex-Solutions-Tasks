@@ -58,14 +58,19 @@ image="https://cdn-icons-png.flaticon.com/512/845/845646.png"
 
 text="Are you sure you want to logout?"
 
-yesText="Yes"
+buttons={[
 
-noText="No"
+    {
+        text:"Yes",
+        action:logout
+    },
 
-onYes={logout}
+    {
+        text:"No",
+        action:()=>setShowLogout(false)
+    }
 
-onNo={()=>setShowLogout(false)}
-
+]}
 />
 
 }
