@@ -2,10 +2,8 @@ import TaskItem from "./TaskItem";
 import "../Style/Component.css";
 
 
-function TaskList({ tasks, deleteTask, setTasks, editTask }) {
-    function setCompleted(id) {
-        setTasks(tasks.map(task => task.id === id ? { ...task, status: "Completed" } : task));
-    }
+function TaskList({ tasks, deleteTask, toggleStatus, editTask }) {
+
 
     return (
 
@@ -15,12 +13,13 @@ function TaskList({ tasks, deleteTask, setTasks, editTask }) {
             {
                 tasks.map((task) => (
                     <TaskItem
+                        key={task.id}
 
                         task={task}
 
                         deleteTask={deleteTask}
 
-                        setCompleted={setCompleted}
+                        toggleStatus={toggleStatus}
 
                         editTask={editTask}
 

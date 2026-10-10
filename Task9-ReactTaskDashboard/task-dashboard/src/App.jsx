@@ -19,7 +19,23 @@ function App() {
   const [filter, setFilter] = useState("All");
 
 
+  function toggleStatus(id) {
 
+    setTasks(prev =>
+      prev.map(task =>
+        task.id === id
+          ? {
+            ...task,
+            status:
+              task.status === "Completed"
+                ? "Pending"
+                : "Completed"
+          }
+          : task
+      )
+    )
+
+  }
   function editTask(task) {
 
     setEditingTask(task);
@@ -160,9 +176,13 @@ function App() {
         <TaskList
 
           tasks={filteredTasks}
-          setTasks={setTasks}
+
           deleteTask={deleteTask}
+
           editTask={editTask}
+
+          toggleStatus={toggleStatus}
+
         />
         <br></br>
         <br></br>

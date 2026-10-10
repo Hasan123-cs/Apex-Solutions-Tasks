@@ -1,24 +1,32 @@
 import "../Style/Component.css";
 
 
-function TaskItem({ task, deleteTask, setCompleted, editTask }) {
-
+function TaskItem({ task, deleteTask, toggleStatus, editTask }) {
     return (
 
         <div className="task-item">
 
 
             <input
+
                 type="checkbox"
+
                 checked={task.status === "Completed"}
-                readOnly
-                onClick={() => setCompleted(task.id)}
+
+                onChange={() => toggleStatus(task.id)}
             />
 
 
             <h3>
                 {task.title}
             </h3>
+            <p>
+                {task.description}
+            </p>
+
+            <span>
+                Priority: {task.priority}
+            </span>
 
             <div style={{ display: "flex", gap: "15px" }}>
 
