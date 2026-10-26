@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SmartQueue.Api/SmartQueue.Api.csproj" />
+  <Project Path="SmartQueue.Application/SmartQueue.Application.csproj" />
+  <Project Path="SmartQueue.Domain/SmartQueue.Domain.csproj" />
+  <Project Path="SmartQueue.Gateway/SmartQueue.Gateway.csproj" />
+  <Project Path="SmartQueue.Infrastructure/SmartQueue.Infrastructure.csproj" />
+</Solution>

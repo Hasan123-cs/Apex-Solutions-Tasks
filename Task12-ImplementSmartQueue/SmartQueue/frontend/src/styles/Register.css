@@ -1,0 +1,129 @@
+
+.register-form h2 {
+  font-size: 25px;
+  letter-spacing: -0.7px;
+  margin: 0 0 5px;
+}
+
+.register-form .form-subtitle {
+  font-size: 13px;
+  color: #53627b;
+  margin: 0 0 27px;
+}
+
+.register-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 16px;
+}
+
+.register-form .form-field {
+  min-width: 0;
+}
+
+.register-form .form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.register-form .form-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.register-form .form-field input {
+  width: 100%;
+  height: 41px;
+  border: 1px solid #c8d3e0;
+  border-radius: 7px;
+  padding: 0 12px;
+  background: white;
+  color: #15223b;
+  font-size: 13px;
+  outline: none;
+}
+
+.register-form .form-field input:focus {
+  border-color: #087f83;
+  box-shadow: 0 0 0 3px rgba(8, 127, 131, 0.12);
+}
+
+.register-form .password-wrapper {
+  position: relative;
+}
+
+.register-form .password-wrapper input {
+  padding-right: 65px;
+}
+
+.register-form .password-toggle {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #53627b;
+  font-size: 12px;
+}
+
+.register-form .password-hint {
+  display: block;
+  color: #16824d;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.register-form .primary-button {
+  display: block;
+  width: 100%;
+  height: 43px;
+  margin-top: 24px;
+  background: #087f83;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.register-form .primary-button:hover {
+  background: #066b70;
+}
+
+.register-form .primary-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.register-form .form-error {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 7px;
+  background: #fff1f0;
+  color: #c3271c;
+  font-size: 12px;
+}
+
+.register-form .auth-notice {
+  margin-top: 16px;
+  background: #f1f3f7;
+  border-radius: 9px;
+  padding: 15px;
+  color: #53627b;
+  font-size: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.register-form .auth-notice span {
+  font-size: 17px;
+}
+
+@media (max-width: 480px) {
+  .register-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
