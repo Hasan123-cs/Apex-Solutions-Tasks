@@ -12,13 +12,14 @@ public class AppointmentService : IAppointmentService
 {
     private readonly ApplicationDbContext _context;
     private readonly IAvailabilityService _availabilityService;
-
+private readonly IEmailService _emailService;
     public AppointmentService(
         ApplicationDbContext context,
-        IAvailabilityService availabilityService)
+        IAvailabilityService availabilityService,IEmailService emailService)
     {
         _context = context;
         _availabilityService = availabilityService;
+        _emailService = emailService;
     }
 
     public async Task<AppointmentResponseDto> CreateAppointmentAsync(
@@ -240,8 +241,201 @@ public class AppointmentService : IAppointmentService
         // 5. Update existing appointment
         appointment.Start = newStart;
         appointment.End = newEnd;
-
+    appointment.Status = AppointmentStatus.Pending;
       
         await _context.SaveChangesAsync();
     }
+
+
+    public async Task<List<StaffAppointmentDto>> GetStaffAppointmentsAsync(
+    string userId,
+    bool canViewAll,
+    DateOnly date)
+{
+    var dayStart = date.ToDateTime(TimeOnly.MinValue);
+    var dayEnd = dayStart.AddDays(1);
+
+    var query = _context.Appointments
+        .AsNoTracking()
+        .Include(a => a.Service)
+        .Where(a =>
+            a.Start >= dayStart &&
+            a.Start < dayEnd);
+
+    // Staff can only see their own appointments
+    if (!canViewAll)
+    {
+        query = query.Where(a => a.StaffId == userId);
+    }
+
+    var appointments = await query
+        .OrderBy(a => a.Start)
+        .ToListAsync();
+
+    // Get customer and staff names from Identity
+    var userIds = appointments
+        .SelectMany(a => new[] { a.CustomerId, a.StaffId })
+        .Distinct()
+        .ToList();
+
+    var users = await _context.Users
+        .AsNoTracking()
+        .Where(u => userIds.Contains(u.Id))
+        .ToListAsync();
+
+    var userNames = users.ToDictionary(
+        u => u.Id,
+        u => u.UserName ?? u.Email ?? "Unknown");
+
+    return appointments.Select(a => new StaffAppointmentDto
+    {
+        Id = a.Id,
+        Reference = a.Reference,
+
+        CustomerId = a.CustomerId,
+        CustomerName = userNames.GetValueOrDefault(
+            a.CustomerId, "Unknown"),
+
+        ServiceId = a.ServiceId,
+        ServiceName = a.Service.Name,
+
+        StaffId = a.StaffId,
+        StaffName = userNames.GetValueOrDefault(
+            a.StaffId, "Unknown"),
+
+        Start = a.Start,
+        End = a.End,
+
+        Status = a.Status.ToString()
+    }).ToList();
+}
+
+
+
+
+
+public async Task ConfirmAppointmentAsync(int appointmentId)
+{
+    var appointment = await _context.Appointments
+        .FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+    if (appointment == null)
+        throw new KeyNotFoundException("Appointment not found.");
+
+    if (appointment.Status != AppointmentStatus.Pending)
+        throw new InvalidOperationException(
+            "Only pending appointments can be confirmed.");
+
+    if (appointment.Start <= DateTime.Now)
+        throw new InvalidOperationException(
+            "Past or started appointments cannot be confirmed.");
+
+    var customer = await _context.Users
+        .FirstOrDefaultAsync(u => u.Id == appointment.CustomerId);
+
+    appointment.Status = AppointmentStatus.Confirmed;
+
+    await _context.SaveChangesAsync();
+
+    if (customer != null &&
+        !string.IsNullOrWhiteSpace(customer.Email))
+    {
+      try
+{
+    await _emailService.SendEmailAsync(
+        customer.Email!,
+        "SmartQueue - Appointment Confirmed",
+        $"Your appointment {appointment.Reference} has been confirmed."
+    );
+
+    Console.WriteLine(
+        "Email accepted by SMTP server successfully."
+    );
+}
+catch (Exception ex)
+{
+    Console.WriteLine(
+        $"Email sending failed: {ex.Message}"
+    );
+}
+    }
+}
+
+public async Task CancelAppointmentByStaffAsync(
+    int appointmentId,
+    string staffUserId)
+{
+    var appointment = await _context.Appointments
+        .FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+    if (appointment == null)
+        throw new KeyNotFoundException("Appointment not found.");
+
+    if (appointment.Status != AppointmentStatus.Pending &&
+        appointment.Status != AppointmentStatus.Confirmed)
+    {
+        throw new InvalidOperationException(
+            "Only pending or confirmed appointments can be cancelled.");
+    }
+
+    if (appointment.Start <= DateTime.Now)
+        throw new InvalidOperationException(
+            "Past or started appointments cannot be cancelled.");
+
+    appointment.Status = AppointmentStatus.Cancelled;
+
+    await _context.SaveChangesAsync();
+}
+
+
+public async Task<int> CheckInAppointmentAsync(string reference)
+{
+    if (string.IsNullOrWhiteSpace(reference))
+        throw new ArgumentException(
+            "Appointment reference is required.");
+
+    var appointment = await _context.Appointments
+        .FirstOrDefaultAsync(a =>
+            a.Reference == reference.Trim());
+
+    if (appointment == null)
+        throw new KeyNotFoundException(
+            "Appointment not found.");
+
+    if (appointment.Status != AppointmentStatus.Confirmed)
+        throw new InvalidOperationException(
+            "Only confirmed appointments can check in.");
+
+    var today = DateOnly.FromDateTime(DateTime.Now);
+
+    if (DateOnly.FromDateTime(appointment.Start) != today)
+        throw new InvalidOperationException(
+            "Check-in is only allowed on the appointment date.");
+
+    // Find the highest queue number for today
+    var lastQueueNumber = await _context.QueueEntries
+        .Where(q => q.QueueDate == today)
+        .MaxAsync(q => (int?)q.QueueNumber) ?? 0;
+
+    var nextQueueNumber = lastQueueNumber + 1;
+
+    var queueEntry = new QueueEntry
+    {
+        AppointmentId = appointment.Id,
+        QueueDate = today,
+        QueueNumber = nextQueueNumber,
+        CheckedInAt = DateTime.UtcNow
+    };
+
+    appointment.Status = AppointmentStatus.CheckedIn;
+
+    _context.QueueEntries.Add(queueEntry);
+
+    await _context.SaveChangesAsync();
+
+    return nextQueueNumber;
+}
+
+
+
 }

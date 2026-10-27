@@ -3,21 +3,36 @@ import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import api from "../api/axios";
 
-export default function ProtectedRoute() {
-    const [status, setStatus] = useState("loading");
+export default function ProtectedRoute({ allowedRoles = [] }) {
+    const [auth, setAuth] = useState({
+        status: "loading",
+        role: null,
+    });
 
     useEffect(() => {
         let active = true;
 
         async function verifyToken() {
             try {
-                await api.get("/api/auth/me");
+                const response = await api.get("/api/auth/me");
 
-                if (active) setStatus("authenticated");
+                const role = response.data.role;
+
+                if (active) {
+                    setAuth({
+                        status: "authenticated",
+                        role,
+                    });
+                }
             } catch {
-                sessionStorage.removeItem("token");
+                if (active) {
+                    sessionStorage.removeItem("token");
 
-                if (active) setStatus("unauthenticated");
+                    setAuth({
+                        status: "unauthenticated",
+                        role: null,
+                    });
+                }
             }
         }
 
@@ -28,12 +43,28 @@ export default function ProtectedRoute() {
         };
     }, []);
 
-    if (status === "loading") {
+    if (auth.status === "loading") {
         return <p className="loading">Checking authentication...</p>;
     }
 
-    if (status === "unauthenticated") {
+    if (auth.status === "unauthenticated") {
         return <Navigate to="/login" replace />;
+    }
+
+    if (
+        allowedRoles.length > 0 &&
+        !allowedRoles.includes(auth.role)
+    ) {
+        return (
+            <Navigate
+                to={
+                    auth.role === "Customer"
+                        ? "/book"
+                        : "/employee/appointments"
+                }
+                replace
+            />
+        );
     }
 
     return <Outlet />;

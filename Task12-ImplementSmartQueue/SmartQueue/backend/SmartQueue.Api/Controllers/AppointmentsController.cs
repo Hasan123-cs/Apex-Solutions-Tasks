@@ -154,4 +154,116 @@ public class AppointmentsController : ControllerBase
             return Conflict(new { message = ex.Message });
         }
     }
+
+
+
+    [HttpGet]
+[Authorize(Roles = "Staff,Receptionist,Admin")]
+public async Task<IActionResult> GetAppointments(
+    [FromQuery] DateOnly? date)
+{
+    var userId = User.FindFirstValue("sub")
+        ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    if (string.IsNullOrWhiteSpace(userId))
+        return Unauthorized();
+
+    bool canViewAll =
+        User.IsInRole("Admin") ||
+        User.IsInRole("Receptionist");
+
+    var selectedDate = date
+        ?? DateOnly.FromDateTime(DateTime.Today);
+
+    var appointments = await _appointmentService
+        .GetStaffAppointmentsAsync(
+            userId,
+            canViewAll,
+            selectedDate);
+
+    return Ok(appointments);
+}
+
+
+[HttpPatch("{id:int}/confirm")]
+[Authorize(Roles = "Admin,Receptionist")]
+public async Task<IActionResult> ConfirmAppointment(int id)
+{
+    try
+    {
+        await _appointmentService.ConfirmAppointmentAsync(id);
+
+        return Ok(new
+        {
+            message = "Appointment confirmed successfully."
+        });
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
+}
+
+
+[HttpPatch("{id:int}/staff-cancel")]
+[Authorize(Roles = "Admin,Receptionist")]
+public async Task<IActionResult> CancelByStaff(int id)
+{
+    try
+    {
+        await _appointmentService.CancelAppointmentByStaffAsync(
+            id,
+            User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        return Ok(new
+        {
+            message = "Appointment cancelled successfully."
+        });
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
+}
+
+[HttpPost("check-in")]
+[Authorize(Roles = "Admin,Receptionist,Staff")]
+public async Task<IActionResult> CheckIn(
+    [FromBody] CheckInRequestDto dto)
+{
+    try
+    {
+        var queueNumber =
+            await _appointmentService.CheckInAppointmentAsync(
+                dto.Reference);
+
+        return Ok(new
+        {
+            message = "Appointment checked in successfully.",
+            queueNumber = queueNumber
+        });
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
+}
+
+
 }

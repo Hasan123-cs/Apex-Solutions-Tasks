@@ -14,4 +14,14 @@ public interface IAppointmentService
     int appointmentId,
     string customerId,
     RescheduleAppointmentDto dto);
-}
+    Task<List<StaffAppointmentDto>> GetStaffAppointmentsAsync(
+    string userId,
+    bool canViewAll,
+    DateOnly date);
+
+    Task ConfirmAppointmentAsync(int appointmentId);
+    Task CancelAppointmentByStaffAsync(
+    int appointmentId,
+    string staffUserId);
+
+Task<int> CheckInAppointmentAsync(string reference);}

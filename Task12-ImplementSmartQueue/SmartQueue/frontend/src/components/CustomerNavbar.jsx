@@ -30,10 +30,14 @@ export default function CustomerNavbar() {
         };
     }, []);
 
-    function handleLogout() {
+    const handleLogout = () => {
         sessionStorage.removeItem("token");
+        sessionStorage.removeItem("role");
+        sessionStorage.removeItem("fullName");
+        sessionStorage.removeItem("email");
+
         navigate("/login", { replace: true });
-    }
+    };
 
     const name = user?.name || user?.fullName || "Customer";
 

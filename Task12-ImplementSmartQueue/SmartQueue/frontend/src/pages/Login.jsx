@@ -32,14 +32,17 @@ export default function Login() {
         try {
             const response = await api.post("/api/auth/login", form);
 
-            const { token, role } = response.data;
+            const { token, role, fullName, email } = response.data;
 
+            // Save logged-in user information
             sessionStorage.setItem("token", token);
             sessionStorage.setItem("role", role);
-            console.log("Login role:", role);
-            console.log("Home route:", getHomeRoute(role));
-            // Temporary route until role-based routing is implemented
-            const homeRoute = getHomeRoute(response.data.role);
+            sessionStorage.setItem("fullName", fullName || "");
+            sessionStorage.setItem("email", email || "");
+
+            // Redirect based on user role
+            const homeRoute = getHomeRoute(role);
+
             navigate(homeRoute, { replace: true });
 
         } catch (err) {

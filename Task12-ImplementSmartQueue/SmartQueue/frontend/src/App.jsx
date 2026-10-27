@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -10,9 +11,11 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import BookAppointment from "./pages/BookAppointment";
 import MyAppointments from "./pages/MyAppointments";
+import AppointmentManagement from "./pages/AppointmentManagement";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import CustomerLayout from "./components/CustomerLayout";
+import EmployeeLayout from "./components/employee/EmployeeLayout";
 
 export default function App() {
   return (
@@ -26,7 +29,12 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route element={<ProtectedRoute />}>
+        {/* Customer Routes */}
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={["Customer"]} />
+          }
+        >
           <Route element={<CustomerLayout />}>
             <Route
               path="/dashboard"
@@ -41,6 +49,35 @@ export default function App() {
             <Route
               path="/my-appointments"
               element={<MyAppointments />}
+            />
+          </Route>
+        </Route>
+
+        {/* Employee Routes */}
+        <Route
+          element={
+            <ProtectedRoute
+              allowedRoles={["Staff", "Receptionist", "Admin"]}
+            />
+          }
+        >
+          <Route
+            path="/employee"
+            element={<EmployeeLayout />}
+          >
+            <Route
+              index
+              element={
+                <Navigate
+                  to="appointments"
+                  replace
+                />
+              }
+            />
+
+            <Route
+              path="appointments"
+              element={<AppointmentManagement />}
             />
           </Route>
         </Route>
