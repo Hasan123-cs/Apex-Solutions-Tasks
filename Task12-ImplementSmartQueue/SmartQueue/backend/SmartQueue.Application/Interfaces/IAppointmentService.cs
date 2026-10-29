@@ -24,4 +24,13 @@ public interface IAppointmentService
     int appointmentId,
     string staffUserId);
 
-Task<int> CheckInAppointmentAsync(string reference);}
+Task<int> CheckInAppointmentAsync(string reference);
+
+
+Task RescheduleAppointmentByStaffAsync(
+    int appointmentId,
+    RescheduleAppointmentDto dto);
+
+Task MarkNoShowAsync(int appointmentId);
+
+}

@@ -4,7 +4,8 @@ using SmartQueue.Application.Interfaces;
 using System.Security.Claims;
 using SmartQueue.Application.DTOs.Appointments;
 namespace SmartQueue.Api.Controllers;
-
+using Microsoft.AspNetCore.SignalR;
+using SmartQueue.Api.Hubs;
 [ApiController]
 [Route("api/appointments")]
 [Authorize]
@@ -12,13 +13,17 @@ public class AppointmentsController : ControllerBase
 {
     private readonly IAvailabilityService _availabilityService;
     private readonly IAppointmentService _appointmentService;
+    private readonly IHubContext<QueueHub> _hubContext;
 
     public AppointmentsController(
-        IAvailabilityService availabilityService, IAppointmentService appointmentService)
-    {
-        _availabilityService = availabilityService;
-        _appointmentService = appointmentService;
-    }
+    IAvailabilityService availabilityService,
+    IAppointmentService appointmentService,
+    IHubContext<QueueHub> hubContext)
+{
+    _availabilityService = availabilityService;
+    _appointmentService = appointmentService;
+    _hubContext = hubContext;
+}
 
     [HttpGet("availability")]
     public async Task<IActionResult> GetAvailability(
@@ -244,7 +249,7 @@ public async Task<IActionResult> CheckIn(
         var queueNumber =
             await _appointmentService.CheckInAppointmentAsync(
                 dto.Reference);
-
+        await _hubContext.Clients.All.SendAsync("QueueUpdated");
         return Ok(new
         {
             message = "Appointment checked in successfully.",
@@ -265,5 +270,59 @@ public async Task<IActionResult> CheckIn(
     }
 }
 
+
+[HttpPatch("{id:int}/staff-reschedule")]
+[Authorize(Roles = "Admin,Receptionist")]
+public async Task<IActionResult> RescheduleByStaff(
+    int id,
+    [FromBody] RescheduleAppointmentDto dto)
+{
+    try
+    {
+        await _appointmentService
+            .RescheduleAppointmentByStaffAsync(id, dto);
+
+        return Ok(new
+        {
+            message = "Appointment rescheduled successfully."
+        });
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
+}
+
+
+[HttpPatch("{id:int}/no-show")]
+[Authorize(Roles = "Admin,Receptionist")]
+public async Task<IActionResult> MarkNoShow(int id)
+{
+    try
+    {
+        await _appointmentService.MarkNoShowAsync(id);
+
+        return Ok(new
+        {
+            message = "Appointment marked as No-show successfully."
+        });
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(new { message = ex.Message });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Conflict(new { message = ex.Message });
+    }
+}
 
 }

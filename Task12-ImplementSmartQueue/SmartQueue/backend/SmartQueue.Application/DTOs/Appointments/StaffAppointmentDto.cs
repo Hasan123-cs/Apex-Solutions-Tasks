@@ -19,4 +19,7 @@ public class StaffAppointmentDto
     public DateTime End { get; set; }
 
     public string Status { get; set; } = string.Empty;
+
+        public int? QueueNumber { get; set; }
+    public DateTime? CheckedInAt { get; set; }
 }

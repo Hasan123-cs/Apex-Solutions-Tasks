@@ -32,7 +32,8 @@ export default function AppointmentManagement() {
     const [actionLoading, setActionLoading] = useState(false);
     const [actionError, setActionError] = useState("");
     const [actionSuccess, setActionSuccess] = useState("");
-
+    const [rescheduleAppointment, setRescheduleAppointment] = useState(null);
+    const [newStart, setNewStart] = useState("");
     // 3. Get appointments from backend
     const {
         appointments,
@@ -68,23 +69,29 @@ export default function AppointmentManagement() {
 
         setActionError("");
         setActionSuccess("");
-
+        if (action === "reschedule") {
+            setRescheduleAppointment(appointment);
+            setNewStart("");
+            return;
+        }
         const endpoints = {
             confirm: `/api/appointments/${appointment.id}/confirm`,
             cancel: `/api/appointments/${appointment.id}/staff-cancel`,
+            "no-show": `/api/appointments/${appointment.id}/no-show`,
         };
 
         // Check-in uses POST, not PATCH
-        if (!["confirm", "cancel", "check-in"].includes(action)) {
+        if (!["confirm", "cancel", "check-in", "no-show"].includes(action)) {
             setActionError(`${action} is not implemented yet.`);
             return;
         }
 
-        // Confirm before cancelling
+        // Confirm before cancelling / no-show 
         if (
-            action === "cancel" &&
+            (action === "cancel" || action === "no-show") &&
             !window.confirm(
-                `Are you sure you want to cancel appointment ${appointment.reference}?`
+                `Are you sure you want to ${action === "no-show" ? "mark as No-show" : "cancel"
+                } appointment ${appointment.reference}?`
             )
         ) {
             return;
@@ -116,7 +123,9 @@ export default function AppointmentManagement() {
                 setActionSuccess(
                     `Appointment ${appointment.reference} ${action === "confirm"
                         ? "confirmed"
-                        : "cancelled"
+                        : action === "no-show"
+                            ? "marked as No-show"
+                            : "cancelled"
                     } successfully.`
                 );
             }
@@ -135,7 +144,45 @@ export default function AppointmentManagement() {
     }
 
 
+    // 5.1 handle reschedule 
+    async function handleRescheduleSubmit(event) {
+        event.preventDefault();
 
+        if (!rescheduleAppointment || !newStart || actionLoading) return;
+
+        setActionError("");
+        setActionSuccess("");
+
+        const [selectedDate, selectedTime] = newStart.split("T");
+
+        try {
+            setActionLoading(true);
+
+            await api.patch(
+                `/api/appointments/${rescheduleAppointment.id}/staff-reschedule`,
+                {
+                    date: selectedDate,
+                    startTime: selectedTime,
+                }
+            );
+
+            setActionSuccess(
+                `Appointment ${rescheduleAppointment.reference} rescheduled successfully.`
+            );
+
+            setRescheduleAppointment(null);
+            setNewStart("");
+
+            await refresh();
+        } catch (err) {
+            setActionError(
+                err.response?.data?.message ||
+                "Failed to reschedule appointment."
+            );
+        } finally {
+            setActionLoading(false);
+        }
+    }
     // 6. Apply search and staff filters
     const matchingAppointments = useMemo(() => {
         const searchText = search.trim().toLowerCase();
@@ -233,6 +280,50 @@ export default function AppointmentManagement() {
                     role={role}
                     onAction={handleAppointmentAction}
                 />
+            )}
+            {/* modal of reschedule  */}
+            {rescheduleAppointment && (
+                <div className="employee-reschedule-overlay">
+                    <form
+                        className="employee-reschedule-modal"
+                        onSubmit={handleRescheduleSubmit}
+                    >
+                        <h2>Reschedule Appointment</h2>
+
+                        <p>
+                            Reference: {rescheduleAppointment.reference}
+                        </p>
+
+                        <label htmlFor="reschedule-start">
+                            New Date & Time
+                        </label>
+
+                        <input
+                            id="reschedule-start"
+                            type="datetime-local"
+                            value={newStart}
+                            onChange={(event) => setNewStart(event.target.value)}
+                            required
+                        />
+
+                        <div className="employee-reschedule-buttons">
+                            <button
+                                type="button"
+                                onClick={() => setRescheduleAppointment(null)}
+                                disabled={actionLoading}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                disabled={actionLoading || !newStart}
+                            >
+                                {actionLoading ? "Saving..." : "Save Changes"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             )}
         </main>
     );

@@ -7,6 +7,7 @@ import {
     Users,
     LogOut,
     ListFilter,
+    ListOrdered,
 } from "lucide-react";
 
 import "../../styles/EmployeeSidebar.css";
@@ -19,6 +20,7 @@ export default function EmployeeSidebar() {
         sessionStorage.getItem("fullName") || "Employee";
 
     const isAdmin = role === "Admin";
+    const canAccessQueue = ["Admin", "Receptionist", "Staff"].includes(role);
 
     const initials = fullName
         .split(" ")
@@ -77,7 +79,15 @@ export default function EmployeeSidebar() {
                         <span>Appointments</span>
                     </NavLink>
 
-                    {/* Queue link will be added when its page is ready */}
+                    {canAccessQueue && (
+                        <NavLink
+                            to="/employee/queue"
+                            className={navClass}
+                        >
+                            <ListOrdered size={17} />
+                            <span>Live Queue</span>
+                        </NavLink>
+                    )}
                 </div>
 
                 {isAdmin && (

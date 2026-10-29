@@ -66,6 +66,19 @@ export default function AppointmentTable({
                                 >
                                     {statusLabels[appointment.status] ||
                                         appointment.status}
+                                    {appointment.status === "CheckedIn" &&
+                                        appointment.queueNumber != null && (
+                                            <span className="employee-queue-badge">
+                                                A-{String(appointment.queueNumber).padStart(3, "0")}
+                                            </span>
+                                        )}
+
+                                    {appointment.status === "InProgress" &&
+                                        appointment.roomName && (
+                                            <span className="employee-room-badge">
+                                                {appointment.roomName}
+                                            </span>
+                                        )}
                                 </span>
                             </td>
 

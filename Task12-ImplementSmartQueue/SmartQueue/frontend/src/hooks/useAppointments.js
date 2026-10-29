@@ -37,7 +37,7 @@ export default function useAppointments(date) {
     useEffect(() => {
         const controller = new AbortController();
 
-        fetchAppointments(controller.signal);
+         fetchAppointments(controller.signal);
 
         return () => controller.abort();
     }, [fetchAppointments]);

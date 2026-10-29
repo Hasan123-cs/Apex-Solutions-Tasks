@@ -12,7 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import BookAppointment from "./pages/BookAppointment";
 import MyAppointments from "./pages/MyAppointments";
 import AppointmentManagement from "./pages/AppointmentManagement";
-
+import LiveQueue from "./pages/LiveQueue";
 import ProtectedRoute from "./components/ProtectedRoute";
 import CustomerLayout from "./components/CustomerLayout";
 import EmployeeLayout from "./components/employee/EmployeeLayout";
@@ -36,10 +36,7 @@ export default function App() {
           }
         >
           <Route element={<CustomerLayout />}>
-            <Route
-              path="/dashboard"
-              element={<Dashboard />}
-            />
+
 
             <Route
               path="/book"
@@ -52,6 +49,7 @@ export default function App() {
             />
           </Route>
         </Route>
+
 
         {/* Employee Routes */}
         <Route
@@ -67,20 +65,33 @@ export default function App() {
           >
             <Route
               index
-              element={
-                <Navigate
-                  to="appointments"
-                  replace
-                />
-              }
+              element={<Navigate to="appointments" replace />}
             />
+
+            {/* Admin Dashboard */}
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={["Admin"]} />
+              }
+            >
+              <Route
+                path="dashboard"
+                element={<Dashboard />}
+              />
+            </Route>
 
             <Route
               path="appointments"
               element={<AppointmentManagement />}
             />
+
+            <Route
+              path="queue"
+              element={<LiveQueue />}
+            />
           </Route>
         </Route>
+
 
         <Route
           path="*"

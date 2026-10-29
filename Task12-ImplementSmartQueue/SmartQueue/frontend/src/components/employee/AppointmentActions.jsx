@@ -7,7 +7,7 @@ import {
     Check,
     CalendarX,
 } from "lucide-react";
-
+import { UserX } from "lucide-react";
 import "../../styles/AppointmentActions.css";
 
 export default function AppointmentActions({
@@ -58,11 +58,14 @@ export default function AppointmentActions({
     const canCheckIn = isConfirmed;
 
     const canReschedule =
-        status === "Pending" || status === "Confirmed";
+        canConfirm &&
+        (status === "Pending" || status === "Confirmed");
 
     const canCancel =
         status === "Pending" || status === "Confirmed";
-
+    const canMarkNoShow =
+        canConfirm && status === "Confirmed" &&
+        new Date(appointment.start) <= new Date();
     const showConfirm =
         canConfirm &&
         (status === "Pending" || isConfirmed);
@@ -71,7 +74,8 @@ export default function AppointmentActions({
         canCheckIn ||
         canReschedule ||
         canCancel ||
-        showConfirm;
+        showConfirm ||
+        canMarkNoShow;
 
     if (!hasActions) {
         return <span className="employee-no-actions">—</span>;
@@ -132,6 +136,18 @@ export default function AppointmentActions({
                             <Check size={17} />
                             <span>Confirm</span>
                             {isConfirmed && <small>done</small>}
+                        </button>
+                    )}
+
+                    {canMarkNoShow && (
+                        <button
+                            type="button"
+                            role="menuitem"
+                            className="employee-action-item"
+                            onClick={() => handleAction("no-show")}
+                        >
+                            <UserX size={17} />
+                            <span>Mark No-show</span>
                         </button>
                     )}
 

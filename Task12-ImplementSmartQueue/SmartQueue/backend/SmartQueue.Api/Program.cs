@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SmartQueue.Application.Interfaces;
 using SmartQueue.Infrastructure.Services;
-using SmartQueue.Infrastructure.Data;
+using SmartQueue.Infrastructure.Services.Dashboard;
+using SmartQueue.Api.Hubs;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 // register all DI 
@@ -17,6 +18,11 @@ builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IQueueService, QueueService>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddSingleton<QueuePriorityStore>();
+// signal R 
+builder.Services.AddSignalR();
 // Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -63,6 +69,27 @@ builder.Services
 
             ClockSkew = TimeSpan.FromSeconds(30)
         };
+        options.Events ??= new JwtBearerEvents();
+
+var previousOnMessageReceived = options.Events.OnMessageReceived;
+
+options.Events.OnMessageReceived = async context =>
+{
+    if (previousOnMessageReceived != null)
+        await previousOnMessageReceived(context);
+
+    if (!string.IsNullOrEmpty(context.Token))
+        return;
+
+    var accessToken = context.Request.Query["access_token"];
+    var path = context.HttpContext.Request.Path;
+
+    if (!string.IsNullOrEmpty(accessToken) &&
+        path.StartsWithSegments("/hubs/queue"))
+    {
+        context.Token = accessToken;
+    }
+};
     });
 
 
@@ -74,7 +101,8 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -121,5 +149,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHub<QueueHub>("/hubs/queue");
 app.Run();

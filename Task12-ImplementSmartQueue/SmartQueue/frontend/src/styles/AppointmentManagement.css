@@ -301,3 +301,51 @@
     border-radius: 8px;
     margin: 12px 0;
 }
+
+.employee-queue-badge,
+.employee-room-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 5px 9px;
+    border-radius: 7px;
+    background: #eef2f7;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+.employee-reschedule-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.employee-reschedule-modal {
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.employee-reschedule-modal input {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.employee-reschedule-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
