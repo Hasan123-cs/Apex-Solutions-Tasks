@@ -5,7 +5,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
+import Services from "./pages/Services";
+import { ServicesProvider } from "./Context/ServicesContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -77,6 +78,14 @@ export default function App() {
               <Route
                 path="dashboard"
                 element={<Dashboard />}
+              />
+              <Route
+                path="services"
+                element={
+                  <ServicesProvider>
+                    <Services />
+                  </ServicesProvider>
+                }
               />
             </Route>
 
