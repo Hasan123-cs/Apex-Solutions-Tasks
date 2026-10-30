@@ -20,6 +20,9 @@ builder.Services.AddScoped<IAvailabilityService, AvailabilityService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<
+    IStaffScheduleService,
+    SmartQueue.Infrastructure.Services.StaffScheduleService>();
 builder.Services.AddSingleton<QueuePriorityStore>();
 // signal R 
 builder.Services.AddSignalR();

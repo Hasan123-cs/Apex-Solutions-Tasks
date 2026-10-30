@@ -10,6 +10,8 @@ import { ServicesProvider } from "./Context/ServicesContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Staff from "./pages/Staff";
+import { StaffProvider } from "./Context/StaffContext";
 import BookAppointment from "./pages/BookAppointment";
 import MyAppointments from "./pages/MyAppointments";
 import AppointmentManagement from "./pages/AppointmentManagement";
@@ -60,15 +62,24 @@ export default function App() {
             />
           }
         >
+
           <Route
             path="/employee"
             element={<EmployeeLayout />}
           >
+
             <Route
               index
               element={<Navigate to="appointments" replace />}
             />
-
+            <Route
+              path="staff"
+              element={
+                <StaffProvider>
+                  <Staff />
+                </StaffProvider>
+              }
+            />
             {/* Admin Dashboard */}
             <Route
               element={
