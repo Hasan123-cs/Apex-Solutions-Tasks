@@ -6,7 +6,7 @@ import {
     useRef,
     useState,
 } from "react";
-
+import QRScanner from "../components/queue/QRScanner";
 import * as signalR from "@microsoft/signalr";
 import api from "../api/axios";
 import "../styles/LiveQueue.css";
@@ -84,6 +84,7 @@ const getErrorMessage = (err, fallback) => {
     return data?.message || fallback;
 };
 
+
 // ------------------------------
 // Component
 // ------------------------------
@@ -94,6 +95,8 @@ export default function LiveQueue() {
 
     const [loading, setLoading] = useState(false);
     const [busyId, setBusyId] = useState(null);
+
+    const [scannerOpen, setScannerOpen] = useState(false);
 
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
@@ -166,7 +169,35 @@ export default function LiveQueue() {
             );
         }
     }, []);
+    // handle scan 
+    const handleQRScan = async (scannedReference) => {
+        setScannerOpen(false);
+        setLoading(true);
+        setError("");
+        setMessage("");
 
+        try {
+            const response = await api.post(
+                "/api/appointments/check-in",
+                {
+                    reference: scannedReference.trim(),
+                }
+            );
+
+            setMessage(
+                `${response.data.message} Queue number: A-${String(
+                    response.data.queueNumber
+                ).padStart(3, "0")}`
+            );
+
+            setReference("");
+            await loadQueue();
+        } catch (err) {
+            showError(err, "QR check-in failed.");
+        } finally {
+            setLoading(false);
+        }
+    };
     // ------------------------------
     // Initial Queue Load
     // ------------------------------
@@ -598,12 +629,10 @@ export default function LiveQueue() {
                             </button>
 
                             <button
+                                type="button"
                                 className="lq-outline"
-                                onClick={() =>
-                                    setMessage(
-                                        "QR scanner will be added next."
-                                    )
-                                }
+                                disabled={loading}
+                                onClick={() => setScannerOpen(true)}
                             >
                                 ▦ Scan QR
                             </button>
@@ -919,6 +948,12 @@ export default function LiveQueue() {
                         ×
                     </button>
                 </div>
+            )}
+            {scannerOpen && (
+                <QRScanner
+                    onScan={handleQRScan}
+                    onClose={() => setScannerOpen(false)}
+                />
             )}
         </div>
     );

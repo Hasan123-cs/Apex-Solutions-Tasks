@@ -1,35 +1,34 @@
+export default function StaffProfile({ member, onEdit }) {
+    if (!member) return null;
 
-function getInitials(name = "") {
-    return name
-        .trim()
-        .split(/\s+/)
+    const initials = (member.fullName || member.email || "?")
+        .split(" ")
+        .map((part) => part[0])
         .slice(0, 2)
-        .map((part) => part[0]?.toUpperCase() || "")
-        .join("");
-}
-
-export default function StaffProfile({ member }) {
-    if (!member) {
-        return (
-            <section className="staff-profile-card">
-                <p>Select a staff member to view their profile.</p>
-            </section>
-        );
-    }
+        .join("")
+        .toUpperCase();
 
     return (
         <section className="staff-profile-card">
             <div className="staff-profile-avatar">
-                {getInitials(member.fullName)}
+                {initials}
             </div>
 
             <div className="staff-profile-details">
-                <h2>{member.fullName}</h2>
+                <h2>{member.fullName || member.email}</h2>
                 <p>{member.email}</p>
                 <span className="staff-profile-role">
                     {member.role}
                 </span>
             </div>
+
+            <button
+                type="button"
+                className="staff-edit-account-btn"
+                onClick={onEdit}
+            >
+                ✎ Edit account
+            </button>
         </section>
     );
 }

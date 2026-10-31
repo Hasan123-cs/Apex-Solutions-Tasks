@@ -443,3 +443,27 @@
     min-width: 0;
   }
 }
+.lq-qr-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.lq-qr-modal {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+}
+
+#smartqueue-qr-reader {
+    width: 100%;
+    margin: 20px 0;
+}

@@ -35,6 +35,21 @@ export function StaffProvider({ children }) {
         }
     }, []);
 
+    const updateStaff = useCallback(async (id, data) => {
+        const response = await api.put(
+            `/api/users/staff/${encodeURIComponent(id)}`,
+            data
+        );
+
+        setStaff((previous) =>
+            previous.map((member) =>
+                member.id === id ? response.data : member
+            )
+        );
+
+        return response.data;
+    }, []);
+
     const createStaff = useCallback(async (data) => {
         const response = await api.post("/api/users/staff", data);
 
@@ -50,6 +65,8 @@ export function StaffProvider({ children }) {
 
         return response.data;
     }, []);
+
+
 
     const updateStaffSchedule = useCallback(
         async (staffId, data) => {
@@ -72,6 +89,7 @@ export function StaffProvider({ children }) {
             createStaff,
             getStaffSchedule,
             updateStaffSchedule,
+            updateStaff,
         }),
         [
             staff,
@@ -81,6 +99,7 @@ export function StaffProvider({ children }) {
             createStaff,
             getStaffSchedule,
             updateStaffSchedule,
+            updateStaff,
         ]
     );
 

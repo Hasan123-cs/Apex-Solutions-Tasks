@@ -46,4 +46,22 @@ public async Task<IActionResult> CreateStaff(
     }
 }
 
+
+
+[HttpPut("staff/{id}")]
+[Authorize(Roles = "Admin")]
+public async Task<IActionResult> UpdateStaff(
+    string id,
+    [FromBody] UpdateStaffDto dto)
+{
+    try
+    {
+        var updated = await _staffService.UpdateStaffAsync(id, dto);
+        return Ok(updated);
+    }
+    catch (ArgumentException ex)
+    {
+        return BadRequest(new { message = ex.Message });
+    }
+}
 }

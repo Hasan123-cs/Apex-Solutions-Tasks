@@ -542,3 +542,20 @@
         font-size: 24px;
     }
 }
+.receipt-qr {
+    margin-top: 24px;
+    padding: 24px 12px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.receipt-qr svg {
+    display: block;
+    margin: 16px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.receipt-qr p {
+    overflow-wrap: anywhere;
+}

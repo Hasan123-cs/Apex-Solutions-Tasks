@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useStaff } from "../Context/StaffContext";
 import api from "../api/axios";
-
+import EditStaffModal from "../components/employee/staff/EditStaffModal";
 import StaffList from "../components/employee/staff/StaffList";
 import StaffProfile from "../components/employee/staff/StaffProfile";
 import WeeklySchedule from "../components/employee/staff/WeeklySchedule";
@@ -41,12 +41,16 @@ export default function Staff() {
         error,
         fetchStaff,
         createStaff,
+        updateStaff,
         getStaffSchedule,
         updateStaffSchedule,
     } = useStaff();
 
     const [selectedStaffId, setSelectedStaffId] = useState(null);
     const [search, setSearch] = useState("");
+
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [updatingAccount, setUpdatingAccount] = useState(false);
 
     const [services, setServices] = useState([]);
     const [servicesError, setServicesError] = useState("");
@@ -191,6 +195,22 @@ export default function Staff() {
         canHaveSchedule,
         getStaffSchedule,
     ]);
+
+    // edit staff 
+    const handleEditStaff = async (data) => {
+        if (!selectedStaff) return;
+
+        setUpdatingAccount(true);
+
+        try {
+            await updateStaff(selectedStaff.id, data);
+
+            setEditModalOpen(false);
+            setMessage("Employee account updated successfully.");
+        } finally {
+            setUpdatingAccount(false);
+        }
+    };
 
     // Check whether schedule has unsaved changes.
     const hasChanges = useMemo(() => {
@@ -382,7 +402,10 @@ export default function Staff() {
                 <div className="staff-content">
                     {selectedStaff ? (
                         <>
-                            <StaffProfile member={selectedStaff} />
+                            <StaffProfile
+                                member={selectedStaff}
+                                onEdit={() => setEditModalOpen(true)}
+                            />
 
                             {canHaveSchedule && (
                                 <>
@@ -461,6 +484,16 @@ export default function Staff() {
                     saving={creating}
                     onClose={() => setModalOpen(false)}
                     onSave={handleCreateStaff}
+                />
+            )}
+
+            {editModalOpen && selectedStaff && (
+                <EditStaffModal
+                    key={selectedStaff.id}
+                    member={selectedStaff}
+                    saving={updatingAccount}
+                    onClose={() => setEditModalOpen(false)}
+                    onSave={handleEditStaff}
                 />
             )}
         </div>

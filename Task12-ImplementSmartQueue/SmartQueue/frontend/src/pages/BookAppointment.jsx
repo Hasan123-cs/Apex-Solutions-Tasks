@@ -9,6 +9,7 @@ import StaffSelection from "../components/booking/StaffSelection";
 import BookingCalendar from "../components/booking/BookingCalendar";
 import TimeSlotPicker from "../components/booking/TimeSlotPicker";
 import BookingSummary from "../components/booking/BookingSummary";
+import AppointmentQRCode from "../components/queue/AppointmentQRCode";
 
 import "../styles/BookAppointment.css";
 
@@ -343,6 +344,11 @@ export default function BookAppointment() {
                                 >
                                     {bookedAppointment.status || "Pending"}
                                 </span>
+                            </div>
+                            <div className="receipt-qr">
+                                <AppointmentQRCode
+                                    reference={bookedAppointment.reference}
+                                />
                             </div>
                         </div>
 

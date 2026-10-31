@@ -25,7 +25,9 @@ public class StaffService : IStaffService
     var staff = staffUsers.Select(user => new StaffDto
     {
         Id = user.Id,
-        FullName = user.UserName ?? user.Email ?? "Staff",
+        FullName = string.IsNullOrWhiteSpace(user.FullName)
+    ? user.Email ?? "Staff"
+    : user.FullName,
         Email = user.Email ?? "",
         Role = "Staff"
     });
@@ -81,10 +83,11 @@ public async Task<StaffDto> CreateStaffAsync(CreateStaffDto dto)
     }
 
     var user = new ApplicationUser
-    {
-        UserName = email,
-        Email = email
-    };
+{
+    FullName = fullName,
+    UserName = email,
+    Email = email
+};
 
     var result = await _userManager.CreateAsync(
         user,
@@ -122,6 +125,101 @@ public async Task<StaffDto> CreateStaffAsync(CreateStaffDto dto)
         Email = user.Email ?? "",
         Role = role
     };
+}
+
+
+
+
+
+    public async Task<StaffDto> UpdateStaffAsync(
+    string id,
+    UpdateStaffDto dto)
+{
+    var user = await _userManager.FindByIdAsync(id);
+
+    if (user == null)
+        throw new ArgumentException("Employee not found.");
+
+    var roles = await _userManager.GetRolesAsync(user);
+
+    if (!roles.Contains("Staff") &&
+        !roles.Contains("Receptionist"))
+    {
+        throw new ArgumentException("Invalid employee account.");
+    }
+
+    if (dto.Role != "Staff" && dto.Role != "Receptionist")
+        throw new ArgumentException("Invalid role.");
+
+    if (string.IsNullOrWhiteSpace(dto.FullName) ||
+        string.IsNullOrWhiteSpace(dto.Email))
+    {
+        throw new ArgumentException("Name and email are required.");
+    }
+
+    var existing = await _userManager.FindByEmailAsync(
+        dto.Email.Trim());
+
+    if (existing != null && existing.Id != id)
+        throw new ArgumentException("Email already in use.");
+
+    // Adjust this to your actual ApplicationUser name fields.
+    var email = dto.Email.Trim();
+
+user.FullName = dto.FullName.Trim();
+user.UserName = email;
+user.Email = email;
+
+    var updateResult = await _userManager.UpdateAsync(user);
+
+    if (!updateResult.Succeeded)
+    {
+        throw new ArgumentException(
+            string.Join("; ",
+                updateResult.Errors.Select(e => e.Description)));
+    }
+
+    if (!roles.Contains(dto.Role))
+    {
+        var removeResult = await _userManager.RemoveFromRolesAsync(
+            user,
+            roles.Where(r => r == "Staff" || r == "Receptionist"));
+
+        if (!removeResult.Succeeded)
+            throw new ArgumentException("Failed to remove old role.");
+
+        var addResult = await _userManager.AddToRoleAsync(
+            user, dto.Role);
+
+        if (!addResult.Succeeded)
+            throw new ArgumentException("Failed to assign new role.");
+    }
+
+    if (!string.IsNullOrWhiteSpace(dto.NewPassword))
+    {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(
+            user);
+
+        var passwordResult = await _userManager.ResetPasswordAsync(
+            user,
+            token,
+            dto.NewPassword);
+
+        if (!passwordResult.Succeeded)
+        {
+            throw new ArgumentException(
+                string.Join("; ",
+                    passwordResult.Errors.Select(e => e.Description)));
+        }
+    }
+
+    return new StaffDto
+{
+    Id = user.Id,
+    FullName = user.FullName,
+    Email = user.Email ?? "",
+    Role = dto.Role
+};
 }
 
 }
