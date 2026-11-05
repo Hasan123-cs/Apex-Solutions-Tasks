@@ -67,6 +67,8 @@ public class ApplicationDbContext
                 .IsUnique();
 
             entity.HasIndex(x => new { x.StaffId, x.Start });
+            // .IsUnique();
+            
 
             entity.HasOne(x => x.Service)
                 .WithMany(x => x.Appointments)

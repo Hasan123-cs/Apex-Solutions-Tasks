@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SmartQueue.Application.DTOs.Appointments;
 using SmartQueue.Application.Interfaces;
 using SmartQueue.Domain.Entities;
 using SmartQueue.Domain.Enums;
+using SmartQueue.Domain.ValueObjects;
 using SmartQueue.Infrastructure.Data;
-using System.Globalization;
 using System.Data;
-using Microsoft.Data.SqlClient;
+using System.Globalization;
 namespace SmartQueue.Infrastructure.Services;
 
 public class AppointmentService : IAppointmentService
@@ -63,7 +64,7 @@ private readonly IEmailService _emailService;
             ServiceId = dto.ServiceId,
             Start = start,
             End = end,
-            Status = AppointmentStatus.Pending,
+           
             CreatedAt = DateTime.UtcNow
         };
 
@@ -141,30 +142,10 @@ private readonly IEmailService _emailService;
                 a.CustomerId == customerId);
 
         if (appointment == null)
-        {
             throw new KeyNotFoundException(
                 "Appointment not found.");
-        }
 
-        if (appointment.Status == AppointmentStatus.Cancelled)
-        {
-            throw new InvalidOperationException(
-                "This appointment is already cancelled.");
-        }
-
-        if (appointment.Status == AppointmentStatus.Completed)
-        {
-            throw new InvalidOperationException(
-                "Completed appointments cannot be cancelled.");
-        }
-
-        if (appointment.Start <= DateTime.Now)
-        {
-            throw new InvalidOperationException(
-                "Past or started appointments cannot be cancelled.");
-        }
-
-        appointment.Status = AppointmentStatus.Cancelled;
+        appointment.Cancel(DateTime.Now);
 
         await _context.SaveChangesAsync();
     }
@@ -240,10 +221,15 @@ private readonly IEmailService _emailService;
                 "The selected time is no longer available.");
 
         // 5. Update existing appointment
-        appointment.Start = newStart;
-        appointment.End = newEnd;
-    appointment.Status = AppointmentStatus.Pending;
-      
+        var timeRange = new AppointmentTimeRange(
+    newStart,
+    newEnd);
+
+        appointment.Reschedule(
+            timeRange,
+            DateTime.Now,
+            requireCurrentAppointmentInFuture: true);
+
         await _context.SaveChangesAsync();
     }
 
@@ -297,13 +283,16 @@ private readonly IEmailService _emailService;
         throw new InvalidOperationException(
             "The selected time is no longer available.");
 
-    appointment.Start = newStart;
-    appointment.End = newStart.AddMinutes(
-        appointment.Service.Duration);
+        var timeRange = new AppointmentTimeRange(
+        newStart,
+        newStart.AddMinutes(appointment.Service.Duration));
 
-    appointment.Status = AppointmentStatus.Pending;
+        appointment.Reschedule(
+            timeRange,
+            DateTime.Now,
+            requireCurrentAppointmentInFuture: false);
 
-    await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 }
 public async Task<List<StaffAppointmentDto>> GetStaffAppointmentsAsync(
     string userId,
@@ -386,20 +375,14 @@ public async Task ConfirmAppointmentAsync(int appointmentId)
     if (appointment == null)
         throw new KeyNotFoundException("Appointment not found.");
 
-    if (appointment.Status != AppointmentStatus.Pending)
-        throw new InvalidOperationException(
-            "Only pending appointments can be confirmed.");
-
-    if (appointment.Start <= DateTime.Now)
-        throw new InvalidOperationException(
-            "Past or started appointments cannot be confirmed.");
+  
 
     var customer = await _context.Users
         .FirstOrDefaultAsync(u => u.Id == appointment.CustomerId);
 
-    appointment.Status = AppointmentStatus.Confirmed;
+        appointment.Confirm(DateTime.Now);
 
-    await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
     if (customer != null &&
         !string.IsNullOrWhiteSpace(customer.Email))
@@ -425,35 +408,25 @@ catch (Exception ex)
     }
 }
 
-public async Task CancelAppointmentByStaffAsync(
-    int appointmentId,
-    string staffUserId)
-{
-    var appointment = await _context.Appointments
-        .FirstOrDefaultAsync(a => a.Id == appointmentId);
-
-    if (appointment == null)
-        throw new KeyNotFoundException("Appointment not found.");
-
-    if (appointment.Status != AppointmentStatus.Pending &&
-        appointment.Status != AppointmentStatus.Confirmed)
+    public async Task CancelAppointmentByStaffAsync(
+        int appointmentId,
+        string staffUserId)
     {
-        throw new InvalidOperationException(
-            "Only pending or confirmed appointments can be cancelled.");
+        var appointment = await _context.Appointments
+            .FirstOrDefaultAsync(a => a.Id == appointmentId);
+
+        if (appointment == null)
+            throw new KeyNotFoundException(
+                "Appointment not found.");
+
+        appointment.Cancel(DateTime.Now);
+
+        await _context.SaveChangesAsync();
     }
 
-    if (appointment.Start <= DateTime.Now)
-        throw new InvalidOperationException(
-            "Past or started appointments cannot be cancelled.");
-
-    appointment.Status = AppointmentStatus.Cancelled;
-
-    await _context.SaveChangesAsync();
-}
 
 
-
-public async Task<int> CheckInAppointmentAsync(string reference)
+    public async Task<int> CheckInAppointmentAsync(string reference)
 {
     if (string.IsNullOrWhiteSpace(reference))
         throw new ArgumentException(
@@ -492,17 +465,11 @@ public async Task<int> CheckInAppointmentAsync(string reference)
                     $"current status: {appointment.Status}.");
             }
 
-            if (appointment.Status != AppointmentStatus.Confirmed)
-                throw new InvalidOperationException(
-                    "Only confirmed appointments can check in.");
+                var today = DateOnly.FromDateTime(DateTime.Now);
 
-            var today = DateOnly.FromDateTime(DateTime.Now);
+                appointment.CheckIn(today);
 
-            if (DateOnly.FromDateTime(appointment.Start) != today)
-                throw new InvalidOperationException(
-                    "Check-in is only allowed on the appointment date.");
-
-            var lastQueueNumber = await _context.QueueEntries
+                var lastQueueNumber = await _context.QueueEntries
                 .Where(q => q.QueueDate == today)
                 .MaxAsync(q => (int?)q.QueueNumber) ?? 0;
 
@@ -516,7 +483,6 @@ public async Task<int> CheckInAppointmentAsync(string reference)
                 CheckedInAt = DateTime.UtcNow
             };
 
-            appointment.Status = AppointmentStatus.CheckedIn;
             _context.QueueEntries.Add(queueEntry);
 
             await _context.SaveChangesAsync();
@@ -571,9 +537,9 @@ public async Task MarkNoShowAsync(int appointmentId)
         throw new InvalidOperationException(
             "Cannot mark No-show before the appointment starts.");
 
-    appointment.Status = AppointmentStatus.NoShow;
+        appointment.MarkAsNoShow(DateTime.Now);
 
-    await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); ;
 }
 
 }

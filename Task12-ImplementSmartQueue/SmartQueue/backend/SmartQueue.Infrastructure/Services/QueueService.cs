@@ -260,10 +260,12 @@ if (nextForStaff != queueEntryId)
 }
 
 
-    queueEntry.Appointment.Status = AppointmentStatus.InProgress;
-    queueEntry.CalledAt = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
 
-    await _context.SaveChangesAsync();
+        queueEntry.Appointment.StartService();
+        queueEntry.MarkCalled(now);
+
+        await _context.SaveChangesAsync();
 }
 
 
@@ -295,10 +297,13 @@ public async Task CompleteQueueEntryAsync(
         throw new InvalidOperationException(
             "Only customers in service can be completed.");
 
-    queueEntry.Appointment.Status = AppointmentStatus.Completed;
-    queueEntry.CompletedAt = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
 
-    await _context.SaveChangesAsync();
+        queueEntry.Appointment.Complete();
+        queueEntry.MarkCompleted(now);
+
+        await _context.SaveChangesAsync();
+
 }
 
 

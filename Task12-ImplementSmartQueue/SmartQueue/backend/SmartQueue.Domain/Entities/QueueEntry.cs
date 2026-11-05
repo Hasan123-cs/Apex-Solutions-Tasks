@@ -1,9 +1,10 @@
 
+using SmartQueue.Domain.Common;
+
 namespace SmartQueue.Domain.Entities;
 
-public class QueueEntry
+public class QueueEntry : Entity<int>
 {
-    public int Id { get; set; }
 
     public int AppointmentId { get; set; }
 
@@ -19,4 +20,24 @@ public class QueueEntry
     public DateTime? CompletedAt { get; set; }
 
     public Appointment Appointment { get; set; } = null!;
+    public void MarkCalled(DateTime now)
+    {
+        if (CalledAt.HasValue)
+            throw new InvalidOperationException(
+                "This queue entry has already been called.");
+
+        CalledAt = now;
+    }
+    public void MarkCompleted(DateTime now)
+    {
+        if (!CalledAt.HasValue)
+            throw new InvalidOperationException(
+                "Cannot complete a queue entry before calling it.");
+
+        if (CompletedAt.HasValue)
+            throw new InvalidOperationException(
+                "This queue entry is already completed.");
+
+        CompletedAt = now;
+    }
 }
