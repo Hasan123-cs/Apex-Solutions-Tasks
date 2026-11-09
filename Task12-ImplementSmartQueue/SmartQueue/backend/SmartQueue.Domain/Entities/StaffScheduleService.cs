@@ -1,7 +1,9 @@
 ﻿
+using SmartQueue.Domain.Common;
+
 namespace SmartQueue.Domain.Entities;
 
-public class StaffScheduleService
+public class StaffScheduleService 
 {
     public int StaffScheduleId { get; set; }
 

@@ -1,7 +1,9 @@
 ﻿
+using SmartQueue.Domain.Common;
+
 namespace SmartQueue.Domain.Entities;
 
-public class StaffDayOff
+public class StaffDayOff : Entity<int>
 {
     public int Id { get; set; }
 

@@ -44,20 +44,23 @@ public class StaffScheduleService : IStaffScheduleService
     }
 
     public async Task<StaffScheduleDto?> UpdateScheduleAsync(
-        string staffId,
-        UpdateStaffScheduleDto dto)
+      string staffId,
+      UpdateStaffScheduleDto dto)
     {
+        // 1. Verify staff exists
         var user = await FindStaffAsync(staffId);
 
         if (user == null)
             return null;
 
+        // 2. Validate DTO
         ValidateSchedule(dto);
 
         var serviceIds = dto.QualifiedServiceIds
             .Distinct()
             .ToList();
 
+        // 3. Verify selected services exist and are active
         var activeServiceIds = await _context.Services
             .Where(s => serviceIds.Contains(s.Id) && s.Active)
             .Select(s => s.Id)
@@ -66,97 +69,51 @@ public class StaffScheduleService : IStaffScheduleService
         if (activeServiceIds.Count != serviceIds.Count)
         {
             throw new ArgumentException(
-                "One or more selected services are inactive or do not exist."
-            );
+                "One or more selected services are inactive or do not exist.");
         }
 
+        // 4. Begin transaction
         await using var transaction =
             await _context.Database.BeginTransactionAsync();
 
+        // 5. Load aggregate with its children
         var schedule = await LoadScheduleAsync(staffId);
 
         if (schedule == null)
         {
-            schedule = new StaffSchedule
-            {
-                StaffId = staffId
-            };
-
+            schedule = new StaffSchedule(staffId);
             _context.StaffSchedules.Add(schedule);
-
-            await _context.SaveChangesAsync();
         }
 
-
-               // Replace weekly intervals
+        // 6. Snapshot existing children for EF Core tracking
         var oldIntervals = schedule.WeeklyIntervals.ToList();
+        var oldDaysOff = schedule.DaysOff.ToList();
+        var oldServices = schedule.StaffScheduleServices.ToList();
 
+        // 7. Domain controls the changes
+        schedule.ReplaceWeeklyIntervals(
+            dto.WeeklyIntervals.Select(i =>
+                (i.DayOfWeek, i.From, i.To))
+        );
+
+        schedule.ReplaceDaysOff(dto.DaysOff);
+
+        schedule.ReplaceQualifiedServices(serviceIds);
+
+        // 8. Tell EF Core which old children were removed
         _context.WeeklyIntervals.RemoveRange(oldIntervals);
 
-        // Execute deletion before adding new intervals
+        var remainingDaysOff = schedule.DaysOff.ToHashSet();
+        _context.StaffDaysOff.RemoveRange(
+            oldDaysOff.Where(x => !remainingDaysOff.Contains(x)));
+
+        var remainingServices = schedule.StaffScheduleServices.ToHashSet();
+        _context.StaffScheduleServices.RemoveRange(
+            oldServices.Where(x => !remainingServices.Contains(x)));
+
+        // 9. Persist changes
         await _context.SaveChangesAsync();
 
-        foreach (var interval in dto.WeeklyIntervals)
-        {
-            _context.WeeklyIntervals.Add(new WeeklyInterval
-            {
-                StaffScheduleId = schedule.Id,
-                DayOfWeek = interval.DayOfWeek,
-                From = interval.From,
-                To = interval.To
-            });
-        }
-
-        // Update specific days off
-        var requestedDaysOff = dto.DaysOff.ToHashSet();
-
-        var daysOffToRemove = schedule.DaysOff
-            .Where(d => !requestedDaysOff.Contains(d.Date))
-            .ToList();
-
-        _context.StaffDaysOff.RemoveRange(daysOffToRemove);
-
-        var existingDaysOff = schedule.DaysOff
-            .Select(d => d.Date)
-            .ToHashSet();
-
-        foreach (var date in requestedDaysOff)
-        {
-            if (!existingDaysOff.Contains(date))
-            {
-                schedule.DaysOff.Add(new StaffDayOff
-                {
-                    Date = date
-                });
-            }
-        }
-
-
-        // Update qualified services
-        var existingServiceIds = schedule.StaffScheduleServices
-            .Select(x => x.ServiceId)
-            .ToHashSet();
-
-        var servicesToRemove = schedule.StaffScheduleServices
-            .Where(x => !serviceIds.Contains(x.ServiceId))
-            .ToList();
-
-        _context.StaffScheduleServices.RemoveRange(servicesToRemove);
-
-        foreach (var serviceId in serviceIds)
-        {
-            if (!existingServiceIds.Contains(serviceId))
-            {
-                schedule.StaffScheduleServices.Add(
-                    new SmartQueue.Domain.Entities.StaffScheduleService
-                    {
-                        ServiceId = serviceId
-                    }
-                );
-            }
-        }
-
-        await _context.SaveChangesAsync();
         await transaction.CommitAsync();
 
         return MapToDto(schedule);

@@ -103,8 +103,19 @@ public class ApplicationDbContext
                 .WithOne(x => x.StaffSchedule)
                 .HasForeignKey<StaffSchedule>(x => x.StaffId)
                 .OnDelete(DeleteBehavior.Restrict);
-        });
 
+            entity.Navigation(x => x.WeeklyIntervals)
+                .HasField("_weeklyIntervals")
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            entity.Navigation(x => x.DaysOff)
+                .HasField("_daysOff")
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            entity.Navigation(x => x.StaffScheduleServices)
+                .HasField("_staffScheduleServices")
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+        });
         // WEEKLY INTERVALS
         modelBuilder.Entity<WeeklyInterval>(entity =>
         {

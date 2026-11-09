@@ -72,15 +72,12 @@ public class ServiceService : IServiceService
     // Create
     public async Task<ServiceDto> CreateServiceAsync(SaveServiceDto dto)
     {
-        var service = new Service
-        {
-            Name = dto.Name.Trim(),
-            Description = dto.Description?.Trim(),
-            Duration = dto.DurationMinutes,
-            Price = dto.Price,
-            Active = true,
-            CreatedAt = DateTime.UtcNow
-        };
+        var service = new Service(
+     dto.Name,
+     dto.Description,
+     dto.DurationMinutes,
+     dto.Price
+ );
 
         _context.Services.Add(service);
 
@@ -100,11 +97,12 @@ public class ServiceService : IServiceService
 
         if (service == null)
             return null;
-
-        service.Name = dto.Name.Trim();
-        service.Description = dto.Description?.Trim();
-        service.Duration = dto.DurationMinutes;
-        service.Price = dto.Price;
+        service.UpdateDetails(
+            dto.Name,
+            dto.Description,
+            dto.DurationMinutes,
+            dto.Price
+        );
 
         await _context.SaveChangesAsync();
 
@@ -123,7 +121,7 @@ public class ServiceService : IServiceService
         if (service == null)
             return null;
 
-        service.Active = dto.IsActive;
+        service.SetActive(dto.IsActive);
 
         await _context.SaveChangesAsync();
 

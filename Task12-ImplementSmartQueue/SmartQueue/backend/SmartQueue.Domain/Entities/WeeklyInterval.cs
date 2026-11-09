@@ -1,7 +1,9 @@
 ﻿
+using SmartQueue.Domain.Common;
+
 namespace SmartQueue.Domain.Entities;
 
-public class WeeklyInterval
+public class WeeklyInterval : Entity<int>
 {
     public int Id { get; set; }
 

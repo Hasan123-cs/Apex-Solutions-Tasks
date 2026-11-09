@@ -1,0 +1,284 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Management - DDD Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f5fa;
+      color: #172033;
+      margin: 0;
+      padding: 30px;
+    }
+    .container { max-width: 850px; margin: auto; }
+    h1 { margin-bottom: 5px; }
+    .subtitle { color: #64748b; margin-bottom: 25px; }
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px #0000000d;
+    }
+    h2 { font-size: 19px; margin-top: 0; }
+    label {
+      display: block;
+      font-size: 13px;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 11px 17px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    button.secondary { background: #475569; }
+    button.success { background: #15803d; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .actions button { margin-top: 10px; }
+    .message {
+      padding: 12px;
+      border-radius: 7px;
+      margin-top: 14px;
+      background: #e0f2fe;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .message.error { background: #fee2e2; color: #991b1b; }
+    .message.success { background: #dcfce7; color: #166534; }
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    @media(max-width: 550px) {
+      .grid { grid-template-columns: 1fr; }
+      body { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Order Management</h1>
+    <p class="subtitle">DDD Exercise - API Testing Dashboard</p>
+
+    <div class="card">
+      <h2>1. Create Order</h2>
+      <p>A new Product ID will be generated automatically.</p>
+
+      <div class="grid">
+        <div>
+          <label>Quantity</label>
+          <input id="createQty" type="number" value="2" />
+        </div>
+        <div>
+          <label>Unit Price</label>
+          <input id="createPrice" type="number" value="50" step="0.01" />
+        </div>
+      </div>
+
+      <button onclick="createOrder()">Create Order</button>
+    </div>
+
+    <div class="card">
+      <h2>2. Current Order</h2>
+
+      <label>Order ID</label>
+      <input id="orderId" placeholder="Create an order or paste its ID" />
+
+      <div class="actions">
+        <button class="secondary" onclick="getOrder()">Get Order</button>
+        <button class="success" onclick="confirmOrder()">Confirm Order</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3. Add Product</h2>
+
+      <label>Product ID</label>
+      <input id="productId" placeholder="Product GUID" />
+
+      <button class="secondary" onclick="generateProductId()">
+        Generate Product ID
+      </button>
+
+      <div class="grid">
+        <div>
+          <label>Quantity</label>
+          <input id="addQty" type="number" value="1" />
+        </div>
+        <div>
+          <label>Unit Price</label>
+          <input id="addPrice" type="number" value="25" step="0.01" />
+        </div>
+      </div>
+
+      <button onclick="addProduct()">Add Product</button>
+    </div>
+
+    <div class="card">
+      <h2>4. API Result</h2>
+      <div id="message" class="message">Ready to test.</div>
+      <pre id="result">No order loaded yet.</pre>
+    </div>
+  </div>
+
+  <script>
+    const API = "/api/orders";
+
+    const value = id => document.getElementById(id).value;
+
+    function showMessage(message, error = false) {
+      const element = document.getElementById("message");
+      element.textContent = message;
+      element.className = "message " + (error ? "error" : "success");
+    }
+
+    function generateProductId() {
+      document.getElementById("productId").value = crypto.randomUUID();
+    }
+
+    function getRequiredOrderId() {
+      const id = value("orderId").trim();
+      if (!id) throw new Error("Create an order or enter an Order ID.");
+      return encodeURIComponent(id);
+    }
+
+    async function sendRequest(url, options = {}) {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+
+      const text = await response.text();
+      let data = null;
+
+      if (text) {
+        try { data = JSON.parse(text); }
+        catch { data = text; }
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message ||
+          data?.title ||
+          `HTTP ${response.status}: ${response.statusText}`
+        );
+      }
+
+      return data;
+    }
+
+    async function createOrder() {
+      try {
+        const productId = crypto.randomUUID();
+
+        const data = await sendRequest(API, {
+          method: "POST",
+          body: JSON.stringify({
+            items: [{
+              productId,
+              quantity: Number(value("createQty")),
+              unitPrice: Number(value("createPrice"))
+            }]
+          })
+        });
+
+        document.getElementById("orderId").value = data.id;
+        showMessage("Order created successfully! ID: " + data.id);
+        await loadOrder();
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    async function addProduct() {
+      try {
+        const orderId = getRequiredOrderId();
+        let productId = value("productId").trim();
+
+        if (!productId) {
+          productId = crypto.randomUUID();
+          document.getElementById("productId").value = productId;
+        }
+
+        await sendRequest(`${API}/${orderId}/items`, {
+          method: "POST",
+          body: JSON.stringify({
+            productId,
+            quantity: Number(value("addQty")),
+            unitPrice: Number(value("addPrice"))
+          })
+        });
+
+        showMessage("Product added successfully!");
+        await loadOrder();
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    async function confirmOrder() {
+      try {
+        const orderId = getRequiredOrderId();
+
+        await sendRequest(`${API}/${orderId}/confirm`, {
+          method: "POST"
+        });
+
+        showMessage("Order confirmed successfully!");
+        await loadOrder();
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    async function loadOrder() {
+      const orderId = getRequiredOrderId();
+      const order = await sendRequest(`${API}/${orderId}`);
+      document.getElementById("result").textContent =
+        JSON.stringify(order, null, 2);
+      return order;
+    }
+
+    async function getOrder() {
+      try {
+        await loadOrder();
+        showMessage("Order loaded successfully!");
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    generateProductId();
+  </script>
+</body>
+</html>
