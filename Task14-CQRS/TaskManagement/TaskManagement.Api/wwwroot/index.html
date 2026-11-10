@@ -1,0 +1,94 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskFlow | CQRS Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/app.js" defer></script>
+</head>
+<body>
+    <main class="container">
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo">✓</div>
+                <div>
+                    <h1>TaskFlow</h1>
+                    <p>CQRS Task Management · ASP.NET Core .NET 10</p>
+                </div>
+            </div>
+            <span class="badge">● .NET Backend</span>
+        </header>
+
+        <section class="intro">
+            <h2>Task Dashboard</h2>
+            <p>Manage tasks with CQRS commands and queries.</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat">
+                <span>Total Tasks</span>
+                <strong id="totalTasks">0</strong>
+            </div>
+            <div class="stat">
+                <span>Pending Tasks</span>
+                <strong id="pendingTasks">0</strong>
+            </div>
+            <div class="stat">
+                <span>Completed Tasks</span>
+                <strong id="completedTasks">0</strong>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h3>Create New Task</h3>
+            <p class="muted">CreateTaskCommand</p>
+
+            <form id="taskForm">
+                <label for="title">Task Title</label>
+                <input id="title"
+                       type="text"
+                       placeholder="e.g. Implement CQRS"
+                       required />
+
+                <label for="description">Description</label>
+                <textarea id="description"
+                          placeholder="Optional description..."
+                          rows="3"></textarea>
+
+                <button id="createButton" type="submit">
+                    + Create Task
+                </button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="list-header">
+                <div>
+                    <h3>Your Tasks</h3>
+                    <p class="muted">GetAllTasksQuery</p>
+                </div>
+
+                <div class="controls">
+                    <select id="filter">
+                        <option value="all">All Tasks</option>
+                        <option value="false">Pending</option>
+                        <option value="true">Completed</option>
+                    </select>
+                    <button id="refreshButton" class="secondary" type="button">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div id="message" role="alert" hidden></div>
+            <div id="taskList" class="task-list"></div>
+        </section>
+
+        <footer>
+            ASP.NET Core · CQRS · MediatR · EF Core · SQL Server
+        </footer>
+    </main>
+</body>
+</html>
