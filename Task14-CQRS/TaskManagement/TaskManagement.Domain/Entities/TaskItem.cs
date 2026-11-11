@@ -1,6 +1,9 @@
-﻿namespace TaskManagement.Domain.Entities;
+﻿using TaskManagement.Domain.Common;
+using TaskManagement.Domain.Events;
 
-public class TaskItem
+namespace TaskManagement.Domain.Entities;
+
+public class TaskItem : BaseEntity
 {
     public Guid Id { get; private set; }
     public string Title { get; private set; } = null!;
@@ -21,6 +24,13 @@ public class TaskItem
         Description = description;
         IsCompleted = false;
         CreatedAt = DateTime.UtcNow;
+        AddDomainEvent(
+            new TaskCreatedDomainEvent(
+                Id,
+                Title,
+                CreatedAt
+            )
+        );
     }
 
     public void Complete()
@@ -30,5 +40,12 @@ public class TaskItem
                 "Task is already completed.");
 
         IsCompleted = true;
+        AddDomainEvent(
+           new TaskCompletedDomainEvent(
+               Id,
+               Title,
+               DateTime.UtcNow
+           )
+       );
     }
 }

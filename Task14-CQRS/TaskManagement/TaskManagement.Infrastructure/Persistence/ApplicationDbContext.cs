@@ -34,6 +34,7 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(x => x.CreatedAt)
                 .IsRequired();
+            entity.Ignore(x => x.DomainEvents);
         });
     }
 }

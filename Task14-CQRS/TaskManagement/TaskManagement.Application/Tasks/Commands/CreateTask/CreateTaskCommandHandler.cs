@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TaskManagement.Application.Events;
 using TaskManagement.Application.Interfaces;
 using TaskManagement.Domain.Entities;
 
@@ -9,12 +10,15 @@ public class CreateTaskCommandHandler
 {
     private readonly ITaskRepository _repository;
 
+    private readonly IDomainEventDispatcher _dispatcher;
+
     public CreateTaskCommandHandler(
-        ITaskRepository repository)
+        ITaskRepository repository,
+        IDomainEventDispatcher publisher)
     {
         _repository = repository;
+        _dispatcher = publisher;
     }
-
     public async Task<Guid> Handle(
         CreateTaskCommand request,
         CancellationToken cancellationToken)
@@ -29,6 +33,15 @@ public class CreateTaskCommandHandler
 
         await _repository.SaveChangesAsync(
             cancellationToken);
+
+        var domainEvents = task.DomainEvents.ToList();
+
+        task.ClearDomainEvents();
+
+       await _dispatcher.DispatchAsync(
+            domainEvents,
+            cancellationToken);
+
 
         return task.Id;
     }
