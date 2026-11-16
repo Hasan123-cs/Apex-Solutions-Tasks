@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BankAccount.API/BankAccount.API.csproj" />
+  <Project Path="BankAccount.Application/BankAccount.Application.csproj" />
+  <Project Path="BankAccount.Domain/BankAccount.Domain.csproj" />
+  <Project Path="BankAccount.Infrastructure/BankAccount.Infrastructure.csproj" />
+</Solution>

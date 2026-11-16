@@ -9,7 +9,7 @@ public class TaskCompletedDomainEventHandler
     public Task Handle(
         DomainEventNotification<TaskCompletedDomainEvent> notification,
         CancellationToken cancellationToken)
-    {
+    {   
 
         var taskEvent = notification.DomainEvent;
         Console.WriteLine(
